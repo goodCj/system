@@ -11,7 +11,14 @@ const Main = () => {
                 <App />
             </div> */}
             <Layout className='layout-container'>
-                <Sider>Sider</Sider>
+                <Sider className='layout-sider'>
+                    <div className="logo-title">
+                        齿科智能营销系统
+                    </div>
+                    <div className="menu">
+                        
+                    </div>
+                </Sider>
                 <Layout>
                     <Header className='layout-herder'>Header</Header>
                     <Content>Content</Content>
