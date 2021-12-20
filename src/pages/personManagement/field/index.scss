@@ -1,0 +1,82 @@
+.field {
+    display: flex;
+    .left-search {
+        width: 280px;
+        padding: 20px;
+        border-right: 1px solid #d4d4d7;
+        .search-container {
+            .top-search {
+                width: 220px;
+                .ant-input-affix-wrapper {
+                    border-radius: 5px;
+                }
+            }
+            .bottom-content {
+                margin-top: 16px;
+                .searchTree {
+                    font-size: 14px;
+                }
+                .ant-tree-list-holder-inner {
+                    &>div {
+                        margin-bottom: 8px;
+                    }
+                }
+                .ant-tree-switcher-icon {
+                    font-size: 14px;
+                }
+                .ant-tree-node-selected {
+                    background-color: #fff;
+                    color: #1890ff;
+                }
+                .ant-tree-switcher-noop {
+                    display: none;
+                }
+            }
+        }
+    }
+    .left-search-show {
+        width: 280px;
+        padding: 20px;
+        transition: all 0.2s;
+    }
+    .left-search-hide {
+        width: 0;
+        padding: 0;
+        transition: all 0.2s;
+    }
+    .right-table {
+        flex: 1;
+        position: relative;
+        .shrink {
+            position: absolute;
+            width: 24px;
+            height: 32px;
+            border: 1px solid #d4d4d7;
+            top: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            font-size: 18px;
+            justify-content: center;
+            align-items: center;
+            .line {
+                height: 100%;
+                width: 2px;
+                position: absolute;
+                right: -1px;
+                top: 0;
+                background-color: #fff;
+            }
+        }
+        .hideIcon {
+            border-radius: 5px 0px 0px 5px;
+            left: -24px;
+            border-right: 0;
+        }
+        .showIcon {
+            border-radius: 0 5px 5px 0;
+            left: 0;
+            border-left: 0;
+        }
+    }
+}
