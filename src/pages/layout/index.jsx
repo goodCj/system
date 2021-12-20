@@ -16,8 +16,6 @@ const Main = () => {
                         齿科智能营销系统
                     </div>
                     <div className="menu">
-
-                        
                     </div>
                 </Sider>
                 <Layout>
