@@ -41,7 +41,13 @@
   },
   "devDependencies": {
     "customize-cra": "^1.0.0",
+    "cz-conventional-changelog": "^3.3.0",
     "react-app-rewired": "^2.1.8",
     "react-router-dom": "^5.1.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
