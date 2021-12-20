@@ -9,5 +9,37 @@ html,body,#root {
         width: 100%;
         height: 100%;
         overflow: auto;
+        .layout-container {
+            height: 100%;
+        }
+        .layout-sider {
+            color: #fff;
+            .logo-title {
+                height: 60px;
+                font-size: 20px;
+                font-weight: bold;
+                line-height: 60px;
+                text-align: center;
+                background-color: rgba(0, 40, 77, 1);
+                margin-bottom: 16px;
+            }
+        }
+        .layout-header {
+            height: 60px;
+            padding: 0 20px;
+            box-shadow: 0 2px 8px #dadbdd;
+            background-color: #fff;
+            .toggleBtn {
+                font-size: 20px;
+            }
+        }
+        .layout-content {
+            padding: 20px;
+        }
+        .layout-content>div {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
     }
 }

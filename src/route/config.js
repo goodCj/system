@@ -1,58 +1,69 @@
 import { lazy } from "react";
+import {
+    HomeOutlined,
+    UserOutlined,
+    BarChartOutlined,
+    AlignLeftOutlined
+} from '@ant-design/icons';
 
-const Text = lazy(()=> import('../pages/text'))
+const Main = lazy(() => import('../pages/main'))
+const FieldManagement = lazy(() => import('../pages/personManagement/field'))
+const OfficeManagement = lazy(() => import('../pages/personManagement/office'))
 
 const routes = [
     {
-        path: '/app/test',
+        path: '/app/main',
         title: '首页',
-        icon: '',
-        component: Text
+        icon: <HomeOutlined />,
+        component: Main
     },
     {
         title: '人员管理',
-        icon: '',
+        key: 'person-management',
+        icon: <UserOutlined />,
         children: [
             {
                 title: '外勤管理',
-                path: '',
-                component: ''
+                path: '/app/personManagement/fieldManagement',
+                component: FieldManagement
             },
             {
                 title: '内勤管理',
-                path: '',
-                component: ''
+                path: '/app/personManagement/officeManagement',
+                component: OfficeManagement
             }
         ]
     },
     {
         title: '内容管理',
-        icon: '',
+        key: 'content-management',
+        icon: <BarChartOutlined />,
         children: [
             {
                 title: '内容一览',
-                path: '',
+                path: '/app/contentManagement/contentBrowsing',
                 component: ''
             },
             {
                 title: '标签管理',
-                path: '',
+                path: '/app/contentManagement/tagManagement',
                 component: ''
             }
         ]
     },
     {
         title: '数据查询',
-        icon: '',
+        key: 'data-search',
+        icon: <AlignLeftOutlined />,
         children: [
             {
                 title: '统计数据',
-                path: '',
+                path: '/app/dataSearch/statisticalData',
                 component: ''
             },
             {
-                title: '标签管理',
-                path: '',
+                title: '数据明细',
+                path: '/app/dataSearch/dataDetails',
                 component: ''
             }
         ]
