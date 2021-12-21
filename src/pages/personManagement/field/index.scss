@@ -47,10 +47,13 @@
     .right-table {
         flex: 1;
         position: relative;
+        padding: 20px;
         .shrink {
             position: absolute;
             width: 24px;
             height: 32px;
+            z-index: 9;
+            background-color: #fff;
             border: 1px solid #d4d4d7;
             top: 20px;
             cursor: pointer;
@@ -68,6 +71,9 @@
                 background-color: #fff;
             }
         }
+        .shrink:hover {
+            color: #3370ff;
+        }
         .hideIcon {
             border-radius: 5px 0px 0px 5px;
             left: -24px;
@@ -78,5 +84,26 @@
             left: 0;
             border-left: 0;
         }
+        &-content {
+            .top-options {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 18px;
+            }
+            .left-button {
+                .addNewP {
+                    margin-right: 16px;
+                }
+            }
+        }
+    }
+}
+.btnGroup {
+    .ant-btn {
+        display: block;
+    }
+    .ant-btn:hover {
+        color: #1890ff;
+        background-color: #fff;
     }
 }
