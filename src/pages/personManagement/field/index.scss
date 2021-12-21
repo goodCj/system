@@ -1,15 +1,10 @@
 .field {
     display: flex;
     .left-search {
-        width: 280px;
-        padding: 20px;
         border-right: 1px solid #d4d4d7;
         .search-container {
             .top-search {
-                width: 220px;
-                .ant-input-affix-wrapper {
-                    border-radius: 5px;
-                }
+                width: 180px;
             }
             .bottom-content {
                 margin-top: 16px;
@@ -35,7 +30,7 @@
         }
     }
     .left-search-show {
-        width: 280px;
+        width: 260px;
         padding: 20px;
         transition: all 0.2s;
     }

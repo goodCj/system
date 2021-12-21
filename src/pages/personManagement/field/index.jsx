@@ -3,6 +3,8 @@ import { CaretRightOutlined, CaretLeftOutlined, SearchOutlined, CaretDownOutline
 import { useState } from 'react/cjs/react.development'
 import { Input, Tree, Popover, Button } from 'antd'
 import TableView from '~components/Table'
+import AddNewP from './addNewP'
+import BatchImport from './batchImport'
 
 const FieldManagement = () => {
     const [isShrink, setIsShrink] = useState(false)
@@ -154,17 +156,26 @@ const FieldManagement = () => {
     ];
     const [selectionType, setSelectionType] = useState('checkbox');
 
+    /**
+     * @method BatchOptions
+     * @returns 批量操作的内容
+     */
     const BatchOptions = () => {
         return (
             <div className='btnGroup'>
-                <Button type="text">导入</Button>
+                <Button type="text" onClick={ () => setBatchImportFlag(true) }>导入</Button>
                 <Button type="text">导出</Button>
             </div>
         )
     }
+    
+    const [addNewFlag, setAddNewFlag] = useState(false)
+    const [batchImportFlag, setBatchImportFlag] = useState(false)
 
     return (
         <div className='field'>
+            <AddNewP addNewFlag={ addNewFlag } setAddNewFlag={ setAddNewFlag }></AddNewP>
+            <BatchImport batchImportFlag={ batchImportFlag } setBatchImportFlag={ setBatchImportFlag }></BatchImport>
             <div className={`${!isShrink ? 'left-search left-search-show' : 'left-search-hide'}`}>
                 {
                     !isShrink &&
@@ -201,7 +212,11 @@ const FieldManagement = () => {
                 <div className='right-table-content'>
                     <div className="top-options">
                         <div className="left-button">
-                            <Button className='addNewP' type="primary">新增员工</Button>
+                            <Button
+                            className='addNewP'
+                            type="primary"
+                            onClick={ () =>  setAddNewFlag(true)}
+                            >新增员工</Button>
                             <Popover
                                 placement="bottom"
                                 content={<BatchOptions />}
