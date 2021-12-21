@@ -103,11 +103,59 @@ const FieldManagement = () => {
             age: 99,
             address: 'Sidney No. 1 Lake Park',
         },
+        {
+            key: '5',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+        },
+        {
+            key: '6',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+        },
+        {
+            key: '7',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sidney No. 1 Lake Park',
+        },
+        {
+            key: '8',
+            name: 'Disabled User',
+            age: 99,
+            address: 'Sidney No. 1 Lake Park',
+        },
+        {
+            key: '9',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+        },
+        {
+            key: '10',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+        },
+        {
+            key: '11',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sidney No. 1 Lake Park',
+        },
+        {
+            key: '12',
+            name: 'Disabled User',
+            age: 99,
+            address: 'Sidney No. 1 Lake Park',
+        }
     ];
     const [selectionType, setSelectionType] = useState('checkbox');
 
     const BatchOptions = () => {
-        return(
+        return (
             <div className='btnGroup'>
                 <Button type="text">导入</Button>
                 <Button type="text">导出</Button>
@@ -122,11 +170,11 @@ const FieldManagement = () => {
                     !isShrink &&
                     <div className="search-container">
                         <div className="top-search">
-                            <Input prefix={<SearchOutlined />} placeholder='搜索部门' />
+                            <Input prefix={<SearchOutlined className='searchIcon' />} placeholder='搜索部门' />
                         </div>
                         <div className='bottom-content'>
                             <Tree
-                                switcherIcon={<CaretDownOutlined />}
+                                switcherIcon={<CaretDownOutlined  />}
                                 className='searchTree'
                                 defaultExpandAll
                                 treeData={treeData}
@@ -155,17 +203,19 @@ const FieldManagement = () => {
                         <div className="left-button">
                             <Button className='addNewP' type="primary">新增员工</Button>
                             <Popover
-                            placement="bottom" 
-                            content={<BatchOptions />} 
-                            arrowPointAtCenter
-                            trigger="hover">
+                                placement="bottom"
+                                content={<BatchOptions />}
+                                arrowPointAtCenter
+                                trigger="hover">
                                 <Button className='batch'>
-                                    批量操作<DownOutlined className='arrow'/>
+                                    批量操作<DownOutlined className='arrow' />
                                 </Button>
                             </Popover>
 
                         </div>
-                        <div className="right-search"></div>
+                        <div className="right-search">
+                            <Input prefix={<SearchOutlined className='searchIcon' />} placeholder='请输入姓名或手机号' />
+                        </div>
                     </div>
                     <TableView
                         type={selectionType}

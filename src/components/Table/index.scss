@@ -1,4 +1,6 @@
 .table {
+    width: 100%;
+    height: calc(100% - 34px);
     .actions {
         color: #1890ff;
         margin-right: 8px;
@@ -9,5 +11,6 @@
 }
 .pageination {
     margin-top: 16px;
+    margin-bottom: 0!important;
     text-align: right;
 }
