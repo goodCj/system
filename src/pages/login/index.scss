@@ -27,7 +27,14 @@
                 border-radius: 5px;
                 .ant-input {
                     color: #fff;
-                    background-color: #283443;
+                    background-color: transparent!important;
+                }
+                .ant-input:-webkit-autofill {
+                    -webkit-text-fill-color: #fff;
+                    -webkit-box-shadow: 0 0 0 1000px #283443 inset !important;
+                    background-image: none;
+                    background-color: transparent!important;
+                    transition: background-color 5000s ease-in-out 0s;
                 }
             }
         }
@@ -35,6 +42,11 @@
             height: 40px;
             border-radius: 5px;
             font-size: 16px;
+            .loginLoading {
+                font-size: 13px;
+                vertical-align: middle;
+                margin-top: -4px;
+            }
         }
     }
 }

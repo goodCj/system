@@ -1,0 +1,18 @@
+.batchImportModal {
+    .topOptions {
+        margin-bottom: 12px;
+    }
+    .uploadImg {
+        padding: 25px 0;
+    }
+    .uploadTip {
+        font-size: 12px;
+        margin-top: 12px;
+        color: #696969;
+        span {
+            color: #000;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}

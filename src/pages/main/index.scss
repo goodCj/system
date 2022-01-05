@@ -1,6 +1,156 @@
 .main {
-    font-size: 32px;
+  box-sizing: border-box;
+  border: 8px solid #fff;
+  background-color: #f3f4fa!important;
+  padding: 24px;
+
+  .top-title {
+    height: 30px;
+    position: relative;
+
+    .left-title {
+      font-size: 20px;
+      line-height: 20px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+
+      span {
+        font-size: 14px;
+        color: #696969;
+      }
+    }
+
+    .right-tip {
+      font-size: 14px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      color: #696969;
+      vertical-align: bottom;
+    }
+  }
+
+  .center-data,
+  .bottom-chart {
+    margin-top: 24px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+
+    .dataBox {
+      flex: 1;
+      height: 350px;
+      background-color: #fff;
+      margin-left: 24px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgb(0 0 0 / 5%);
+    }
+
+    .dataBox:first-child,
+    .chartBox:first-child {
+      margin-left: 0;
+    }
+
+    .chartBox {
+      height: 350px;
+      background-color: #fff;
+      margin-left: 24px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgb(0 0 0 / 5%);
+    }
+
+    .leftChart {
+      width: 55%;
+    }
+
+    .rightChart {
+      width: 45%;
+    }
+
+    .dataBox,
+    .chartBox {
+      padding: 16px;
+
+      .title {
+        font-size: 16px;
+      }
+
+      .tipIcon {
+        vertical-align: middle;
+        font-size: 14px;
+        color: #999;
+        margin-left: 4px;
+        margin-top: -4px;
+      }
+
+      .centerNum {
+        text-align: center;
+        margin: 48px 0 40px;
+
+        .num {
+          display: inline-block;
+          font-size: 30px;
+          font-weight: bold;
+          font-family: DIN Alternate;
+          position: relative;
+
+          .trend {
+            position: absolute;
+            font-size: 12px;
+            right: -30px;
+            top: 50%;
+            margin-top: -9px;
+
+            .trendIcon {
+              transform: scale(.8);
+              margin-right: 2px;
+            }
+          }
+        }
+
+        .num-tip {
+          color: #999;
+        }
+      }
+
+      .green {
+        color: #01cc97;
+      }
+
+      .info {
+        display: flex;
+        font-size: 14px;
+        padding: 0 12%;
+        margin-bottom: 14px;
+        justify-content: space-between;
+
+        .left-text {
+          color: #999;
+        }
+
+        .right-num {
+
+          .trendIcon {
+            transform: scale(.8);
+            margin-left: 12px;
+          }
+        }
+      }
+    }
+    .chartBox {
+        .top-info {
+            display: flex;
+            justify-content: space-between;
+            .timeSelect {
+                span {
+                    margin-left: 22px;
+                    cursor: pointer;
+                }
+                .active {
+                    color: rgb(24, 144, 255);
+                }
+            }
+        }
+    }
+  }
 }

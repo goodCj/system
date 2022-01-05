@@ -3,12 +3,15 @@ import {
     HomeOutlined,
     UserOutlined,
     BarChartOutlined,
-    AlignLeftOutlined
+    AlignLeftOutlined,
+    TeamOutlined
 } from '@ant-design/icons';
 
 const Main = lazy(() => import('../pages/main'))
+const CompanyManagement = lazy(() => import('../pages/companyManagement'))
 const FieldManagement = lazy(() => import('../pages/personManagement/field'))
-const OfficeManagement = lazy(() => import('../pages/personManagement/office'))
+const TagManagement = lazy(() => import('../pages/contentManagement/tagManagement/index'))
+const ContentBrowsing = lazy(() => import('../pages/contentManagement/contentBrowsing/index'))
 
 const routes = [
     {
@@ -18,21 +21,16 @@ const routes = [
         component: Main
     },
     {
+        title: '公司管理',
+        path: '/app/companyManagement',
+        icon: <TeamOutlined />,
+        component: CompanyManagement
+    },
+    {
         title: '人员管理',
-        key: 'person-management',
+        path: '/app/personManagement',
         icon: <UserOutlined />,
-        children: [
-            {
-                title: '外勤管理',
-                path: '/app/personManagement/fieldManagement',
-                component: FieldManagement
-            },
-            {
-                title: '内勤管理',
-                path: '/app/personManagement/officeManagement',
-                component: OfficeManagement
-            }
-        ]
+        component: FieldManagement
     },
     {
         title: '内容管理',
@@ -42,12 +40,12 @@ const routes = [
             {
                 title: '内容一览',
                 path: '/app/contentManagement/contentBrowsing',
-                component: ''
+                component: ContentBrowsing
             },
             {
                 title: '标签管理',
                 path: '/app/contentManagement/tagManagement',
-                component: ''
+                component: TagManagement
             }
         ]
     },

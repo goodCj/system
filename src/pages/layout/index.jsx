@@ -1,13 +1,14 @@
 import './index.scss'
 import App from "~route"
 import routes from '~route/config';
-import { Layout, Menu, Button } from 'antd';
+import { Layout, Menu, Button, Popover } from 'antd';
 import { useState } from 'react/cjs/react.development';
 import { Link, useHistory } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
+    PoweroffOutlined
 } from '@ant-design/icons';
 const { Header, Sider, Content } = Layout;
 
@@ -22,6 +23,9 @@ const Main = () => {
     const [openKeys, setOpenKeys] = useState([]);
     // 是否闭合导航
     const [collapsed, setCollapsed] = useState(false)
+    const history = useHistory()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    console.log(userInfo)
 
     /**
      * @method onOpenChange
@@ -45,10 +49,26 @@ const Main = () => {
         setCollapsed(!collapsed)
     };
 
+    /**
+     * @method logout
+     * @description 退出登录
+     */
+    const logout = () => {
+        localStorage.removeItem('token')
+        history.push('/login')
+    }
+
+    // 用户操作
+    const userOptions = (
+        <div className='userOptions'>
+            <div onClick={logout}><PoweroffOutlined className="optionsIcon" />退出登录</div>
+        </div>
+    )
+
     return (
         <div className="content-container">
             <Layout className='layout-container'>
-                <Sider width='260' trigger={null} className='layout-sider' collapsed={ collapsed } collapsible>
+                <Sider width='260' trigger={null} className='layout-sider' collapsed={collapsed} collapsible>
                     <div className="logo-title">
                         {
                             !collapsed ? '齿科智能营销系统' : <MenuUnfoldOutlined />
@@ -107,13 +127,16 @@ const Main = () => {
                 </Sider>
                 <Layout>
                     <Header className='layout-header'>
-                        <span className='toggleBtn' onClick={toggleCollapsed}>
+                        <div className='toggleBtn' onClick={toggleCollapsed}>
                             {
                                 collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
                             }
-                        </span>
+                        </div>
+                        <div className='userInfoBox'>
+                            <div className='logout'>欢迎您,<Popover placement="bottomRight" content={userOptions}><span>{ userInfo?.name }</span></Popover></div>
+                        </div>
                     </Header>
-                    <Content className='layout-content'>
+                    <Content className='layout-content' id='layout-content'>
                         <App />
                     </Content>
                 </Layout>

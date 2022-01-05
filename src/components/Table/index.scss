@@ -1,12 +1,37 @@
 .table {
     width: 100%;
-    height: calc(100% - 34px);
+    height: 100%;
     .actions {
         color: #1890ff;
         margin-right: 8px;
     }
     .edit {
         color: red;
+    }
+    .statusBox {
+        color: #52c41a;
+        .line {
+            vertical-align: middle;
+            margin-top: -4px;
+            margin-right: 4px;
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #52c41a;
+        }
+        .endLine {
+            background-color: #f56c6b;
+        }
+        .end {
+            color: #f56c6b;
+        }
+        .in {
+            color: #1890ff;
+        }
+        .inLine {
+            background-color: #1890ff;
+        }
     }
 }
 .pageination {

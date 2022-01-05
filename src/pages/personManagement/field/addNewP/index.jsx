@@ -1,8 +1,20 @@
 import './index.scss'
-import { Modal, Form, Input, InputNumber, Button, Checkbox } from 'antd';
+import { Modal, Form, Input, InputNumber, Button, Checkbox, message } from 'antd';
+import { createUser, updateUser } from '~request/api/user';
+import { useRef, useEffect } from 'react';
+
+const initialValues = {
+    username: '',
+    tel: ''
+}
 
 const AddNewP = (props) => {
-    const { addNewFlag, setAddNewFlag } = props
+    const { updateUserInfo, addNewFlag, setAddNewFlag, currentRole, setOutworkerDataOptions, setOfficeworkerDataOptions } = props
+    const formRef = useRef()
+
+    useEffect(() => {
+        formRef.current.resetFields()
+    }, [])
 
     /**
      * @method handleCancel
@@ -12,12 +24,58 @@ const AddNewP = (props) => {
         setAddNewFlag(false)
     }
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+    /**
+     * @method onFinish
+     * @param {object} values 表单提交参数
+     * @description 提交
+     */
+    const onFinish = async (values) => {
+        // 新增
+        console.log(values)
+        if (!updateUserInfo.id) {
+            // 编辑
+            let res = await createUser({
+                ...values,
+                role: currentRole
+            })
+            if (res.code === 0) {
+                message.success('创建成功', 2)
+                if (currentRole === 3) {
+                    setOutworkerDataOptions({
+                        count: 10,
+                        offset: 0
+                    })
+                } else {
+                    setOfficeworkerDataOptions({
+                        count: 10,
+                        offset: 0
+                    })
+                }
+                handleCancel()
+            }
+        } else {
+            // 编辑
+            let res = await updateUser({
+                ...values,
+                role: currentRole,
+                jobId: updateUserInfo.jobId
+            })
+            if (res.code === 0) {
+                message.success('编辑成功', 2)
+                if (currentRole === 3) {
+                    setOutworkerDataOptions({
+                        count: 10,
+                        offset: 0
+                    })
+                } else {
+                    setOfficeworkerDataOptions({
+                        count: 10,
+                        offset: 0
+                    })
+                }
+                handleCancel()
+            }
+        }
     };
 
     return (
@@ -30,67 +88,65 @@ const AddNewP = (props) => {
             footer={null}
         >
             <Form
+                ref={formRef}
                 name="basic"
-                labelCol={{ span: 3 }}
+                labelCol={{ span: 5 }}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                initialValues={updateUserInfo}
             >
+                {
+                    !updateUserInfo.jobId && 
+                    <Form.Item
+                    label="工号"
+                    name="jobId"
+                    rules={[{ required: true, message: '请输入工号' }]}
+                >
+                    <Input />
+                </Form.Item>
+                }
                 <Form.Item
                     label="姓名"
-                    name="username"
+                    name="name"
                     rules={[{ required: true, message: '请输入姓名' }]}
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label="手机"
-                    name="tel"
+                    label="手机号"
+                    name="phone"
                     rules={[{ required: true, message: '请输入手机号' }]}
                 >
-                    <Input.Password />
+                    <Input />
                 </Form.Item>
                 <Form.Item
-                    label="职位"
-                    name="zw"
+                    label="职称"
+                    name="title"
+                    rules={[{ required: true, message: '请输入职称' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="公司地址"
+                    name="company"
+                    rules={[{ required: true, message: '请输入公司地址' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="公司代码"
+                    name="companyId"
+                    rules={[{ required: true, message: '请输入公司代码' }]}
                 >
                     <Input />
                 </Form.Item>
 
-                <Form.Item
-                    label="员工号"
-                    name="code"
-                >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item
-                    label="机构"
-                    name="jg"
-                >
-                    {/* <Select defaultValue="lucy" >
-                        <Option value="jack">Jack</Option>
-                        <Option value="lucy">Lucy</Option>
-                        <Option value="disabled" disabled>
-                            Disabled
-                        </Option>
-                        <Option value="Yiminghe">yiminghe</Option>
-                    </Select> */}
-                </Form.Item>
-
-                <Form.Item
-                    label="职级"
-                    name="zj"
-                >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button htmlType="submit">
+                <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+                    <Button htmlType="submit" onClick={handleCancel}>
                         取消
                     </Button>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" style={{ marginLeft: '80px' }}>
                         确认
                     </Button>
                 </Form.Item>

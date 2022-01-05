@@ -6,16 +6,18 @@ const addDevServer = () => config => {
     return {
         ...config,
         proxy: {
-            // Proxy forwarding rules
-            // hosts: {
-            //     // Proxy online address to local server address
-            //     'http://dev.eden.com/': {
-            //         protocol: 'http',
-            //         hostname: '127.0.0.1',
-            //         port: '3000',
-            //         path: '/',
-            //     }
-            // },
+            "/admin": {
+                // target: "http://localhost:3000",
+                target: "http://yamingzhang.com:3000/",
+                changeOrigin: true,
+                secure: true,
+            },
+            "/common": {
+                // target: "http://localhost:3000",
+                target: "http://yamingzhang.com:3000/",
+                changeOrigin: true,
+                secure: true,
+            }
         },
     }
 }

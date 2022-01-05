@@ -1,25 +1,27 @@
-import React, { useEffect } from "react"
-import { Switch, Route, Redirect} from "react-router-dom"
-import { useState } from "react/cjs/react.development"
+import React from "react"
+import { Switch, Route, Redirect } from "react-router-dom"
 import routes from "./config"
 
-    const createRoute = (routes) => {
-        let arr = []
-        function rr(routes){
-            routes.map(item => {
-                if(item.children?.length > 0){
-                    rr(item.children)
-                }else {
-                    arr.push(<Route exact key={ String(item.path) } path={ item.path } component={ item.component }></Route>)
-                }
-            })
-        }
-        rr(routes)
-        return arr
+const createRoute = (routes) => {
+    let arr = []
+    function rr(routes) {
+        routes.map(item => {
+            if (item.children?.length > 0) {
+                rr(item.children)
+            } else {
+                arr.push(<Route exact key={String(item.path)} path={item.path} component={item.component}></Route>)
+            }
+        })
     }
+    console.log(routes)
+    rr(routes)
+    return arr
+}
 
 const App = () => {
-    return(
+    const token = localStorage.getItem('token')
+    console.log('----', token)
+    return (
         <Switch>
             {
                 createRoute(routes).map((item) => {
@@ -27,7 +29,6 @@ const App = () => {
                 })
             }
             <Route exact path='/app' render={() => <Redirect to="/app/main" />} />
-            {/* <Route render={() => <Redirect to="/404" />} /> */}
         </Switch>
     )
 }

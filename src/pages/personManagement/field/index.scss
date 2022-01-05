@@ -1,5 +1,8 @@
 .field {
     display: flex;
+    .ant-tabs,.ant-tabs-content {
+        height: 100%;
+    }
     .left-search {
         border-right: 1px solid #d4d4d7;
         .search-container {
@@ -23,9 +26,9 @@
                     background-color: #fff;
                     color: #1890ff;
                 }
-                .ant-tree-switcher-noop {
-                    display: none;
-                }
+                // .ant-tree-switcher-noop {
+                //     display: none;
+                // }
             }
         }
     }
@@ -42,7 +45,10 @@
     .right-table {
         flex: 1;
         position: relative;
-        padding: 20px;
+        padding: 10px 20px 20px  20px;
+        .tableBox {
+            height: calc(100% - 50px);
+        }
         .shrink {
             position: absolute;
             width: 24px;
@@ -88,7 +94,6 @@
                 margin-bottom: 18px;
             }
             .left-button {
-                padding-left: 16px;
                 .addNewP {
                     margin-right: 16px;
                 }
