@@ -1,18 +1,30 @@
 import { Modal, Button } from 'antd';
+import { deleteMaterial } from '~request/api/material';
 
-const DeleteTagM = (props) => {
-    const { deleteFlag, setDeleteFlag, currentDelete, deleteTag } = props
+const DeleteMaterialM = (props) => {
+    const { deleteFlag, setDeleteFlag,setCurrentNode, currentNode, getMaterialList } = props
 
     /**
      * @method handleCancel
      * @description 点击关闭遮罩
      */
     const handleCancel = () => {
+        setCurrentNode(null)
         setDeleteFlag(false)
     }
 
-    const deleteBtn = () => {
-        deleteTag()
+    /**
+     * @method deleteActive
+     * @description 删除活动
+     */
+     const _deleteMaterial = async () => {
+        let res = await deleteMaterial({
+            fodderId: currentNode.fodderId
+        })
+        if(res.code === 0){
+            getMaterialList()
+            setDeleteFlag(false)
+        }
     }
 
     return (
@@ -25,13 +37,13 @@ const DeleteTagM = (props) => {
             footer={null}
         >
             <div style={{ textAlign: 'center', margin: '20px 0 40px' }}>
-                确定删除<span style={{ color: 'red', marginLeft: '6px' }}>{currentDelete.name}</span>
+                确定删除<span style={{ color: 'red', marginLeft: '6px' }}>{currentNode.title}</span>
             </div>
             <div style={{ textAlign: 'center' }}>
                 <Button htmlType="submit" onClick={handleCancel}>
                     取消
                 </Button>
-                <Button type="primary" htmlType="submit" style={{ marginLeft: '80px' }} onClick={deleteBtn}>
+                <Button type="primary" htmlType="submit" style={{ marginLeft: '80px' }} onClick={_deleteMaterial}>
                     确认
                 </Button>
             </div>
@@ -39,4 +51,4 @@ const DeleteTagM = (props) => {
     )
 }
 
-export default DeleteTagM
+export default DeleteMaterialM

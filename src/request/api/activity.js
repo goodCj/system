@@ -5,8 +5,7 @@ export const activityList = (params) => {
     return service({
         url: '/admin/active/list',
         method: 'POST',
-        data: params,
-        hideLoading: true
+        data: params
     })
 }
 
@@ -114,6 +113,16 @@ export const addActiveTag = (params) => {
 export const deleteActiveTag = (params) => {
     return service({
         url: '/admin/activeTags/delete',
+        method: 'POST',
+        hideLoading: true,
+        data: params
+    })
+}
+
+// 为活动删除标签
+export const getActiveData = (params) => {
+    return service({
+        url: '/admin/data/getActiveData',
         method: 'POST',
         hideLoading: true,
         data: params

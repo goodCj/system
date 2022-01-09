@@ -39,9 +39,28 @@
         .table {
             height:100%;
         }
+        .titleBox {
+            display: flex;
+            .img {
+                width: 50px;
+                height: 50px;
+                vertical-align: middle;
+            }
+            .text {
+                display: table;
+                margin-left: 8px;
+                p {
+                    display: table-cell;
+                    vertical-align: middle;
+                }
+            }
+        }
     }
     .topOptions {
         display: flex;
         justify-content: space-between;
     }
+}
+.ant-upload-list {
+    width: 300px!important;
 }

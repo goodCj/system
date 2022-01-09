@@ -37,9 +37,16 @@ class Upload{
                 Key: `${randomString(6)}-${file.name.split('.')[0]}`,
                 Body: file
             },
-            (err) => {
-                console.log(err)
-                message.error('上传失败')
+            (err, data) => {
+                if(err === null){
+                    let uploadFile = {
+                        name: file.name,
+                        url: data.Location
+                    }
+                    resolve(uploadFile)
+                }else {
+                    message.error('上传失败')
+                }
             }
             )
         })

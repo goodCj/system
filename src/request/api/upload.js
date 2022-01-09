@@ -4,6 +4,7 @@ export const getOssKey = (params) => {
     return service({
         url: '/common/getCosConfig',
         method: 'POST',
-        data: params
+        data: params,
+        hideLoading: true
     })
 }

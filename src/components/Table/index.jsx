@@ -14,9 +14,12 @@ const TableView = (props) => {
     }
 
     useEffect(() => {
-        if (data.data.length > 0) {
+        if (setPage && data.data.length > 0) {
             let scrollHeight = tableRef.current.clientHeight - 24 - 55 - 32
-            console.log(tableRef.current.clientHeight)
+            setTableScrollHeight(scrollHeight)
+        }
+        if(!setPage){
+            let scrollHeight = tableRef.current.clientHeight - 55
             setTableScrollHeight(scrollHeight)
         }
     }, [data])
@@ -24,7 +27,7 @@ const TableView = (props) => {
     const pageChange = (page, pageSize) => {
         setPage({
             count: pageSize,
-            offset: pageSize * page
+            offset: pageSize * (page - 1)
         })
     }
 
@@ -37,7 +40,7 @@ const TableView = (props) => {
             <Table
                 className='table'
                 ref={tableRef}
-                pagination={{
+                pagination={setPage ? {
                     position: ['bottomRight'],
                     className: 'pageination',
                     size: "small",
@@ -46,7 +49,7 @@ const TableView = (props) => {
                     showSizeChanger: true,
                     showQuickJumper: true,
                     onChange: pageChange
-                }}
+                }: false}
                 rowSelection={type ? {
                     type: type
                 } : null}

@@ -12,6 +12,7 @@ const CompanyManagement = lazy(() => import('../pages/companyManagement'))
 const FieldManagement = lazy(() => import('../pages/personManagement/field'))
 const TagManagement = lazy(() => import('../pages/contentManagement/tagManagement/index'))
 const ContentBrowsing = lazy(() => import('../pages/contentManagement/contentBrowsing/index'))
+const MaterialBrowsing = lazy(() => import('../pages/contentManagement/materialBrowsing/index'))
 
 const routes = [
     {
@@ -38,9 +39,14 @@ const routes = [
         icon: <BarChartOutlined />,
         children: [
             {
-                title: '内容一览',
+                title: '活动一览',
                 path: '/app/contentManagement/contentBrowsing',
                 component: ContentBrowsing
+            },
+            {
+                title: '素材一览',
+                path: '/app/contentManagement/materialBrowsing',
+                component: MaterialBrowsing
             },
             {
                 title: '标签管理',

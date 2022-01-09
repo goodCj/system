@@ -165,7 +165,7 @@ const FieldManagement = () => {
      * @description 初始化表格
      */
     const initTable = async () => {
-        if (currentRole === 3) {
+        if (Number(currentRole) === 3) {
             // 外勤
             let res = await getUserList({
                 ...outworkerDataOptions,

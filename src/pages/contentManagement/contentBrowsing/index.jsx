@@ -1,10 +1,12 @@
 import './index.scss'
-import { Select, Input, Button } from 'antd';
+import { Select, Input, Button, Tag, Drawer } from 'antd';
 import { useState, useEffect } from 'react';
-import { activityList } from '../../../request/api/activity';
+import { activityList, updateActivity } from '../../../request/api/activity';
 import TableView from '~components/Table'
 import moment from 'moment'
 import AddNewP from './addNew';
+import DeleteActivityM from './deleteActivity';
+import SeeData from './seeData';
 const { Option } = Select;
 
 const ContentBrowsing = () => {
@@ -25,7 +27,19 @@ const ContentBrowsing = () => {
         },
         {
             title: '直播',
-            dataIndex: 'title'
+            width: 240,
+            render: (text, data) => {
+                return (
+                    <div className='titleBox'>
+                        {
+                            data.img && <div className='img'><img src={data.img} alt="" /></div>
+                        }
+                        <div className='text'>
+                            <p>{data.title}</p>
+                        </div>
+                    </div>
+                )
+            }
         },
         {
             title: '活动类型',
@@ -69,7 +83,7 @@ const ContentBrowsing = () => {
                         {
                             data.tags.length > 0 ?
                                 data.tags.map(item => {
-                                    return item.tag.name
+                                    return <Tag color="blue" key={item.tag.id}>{item.tag.name}</Tag>
                                 }) : '-'
                         }
                     </>
@@ -81,16 +95,21 @@ const ContentBrowsing = () => {
             render: (text, data) => {
                 return (
                     <>
-                        <span className='actions' style={{ cursor: 'pointer', color: '#e6a23b' }} >数据查看</span>
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => {
+                            data.startTime = moment(data.startTime, 'YYYY-MM-DD')
+                            editActive(data)
+                        }}>编辑</span>
+                        <span className='actions' style={{ cursor: 'pointer' }}>提醒</span>
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
                         {
                             (data.status === '未开始' || data.status === '已结束') &&
-                            <span className='actions' style={{ cursor: 'pointer' }} >上线</span>
+                            <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goIn')}>上线</span>
                         }
                         {
                             data.status === '进行中' &&
-                            <span className='actions' style={{ cursor: 'pointer' }} >下线</span>
+                            <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goOut')}>下线</span>
                         }
-                        <span className='actions edit' style={{ cursor: 'pointer' }} >删除</span>
+                        <span className='actions edit' style={{ cursor: 'pointer' }} onClick={() => openDeleteM(data)}>删除</span>
                     </>
                 )
             }
@@ -107,6 +126,9 @@ const ContentBrowsing = () => {
         data: []
     })
     const [addNewFlag, setAddNewFlag] = useState(false)
+    const [currentNode, setCurrentNode] = useState()
+    const [deleteFlag, setDeleteFlag] = useState(false)
+    const [seeDataFlag, setSeeDataFlag] = useState(false)
 
 
     useEffect(() => {
@@ -127,7 +149,6 @@ const ContentBrowsing = () => {
         let res = await activityList(params)
         if (res.code === 0) {
             let data = res.data.list
-            console.log(data)
             let newData = data.map(item => {
                 let nowTime =
                     moment().format('x')
@@ -159,12 +180,70 @@ const ContentBrowsing = () => {
         }
     }
 
-    
+    /**
+     * @method deleteTag
+     * @description 删除用户
+     */
+    const openDeleteM = (data) => {
+        setCurrentNode(data)
+        setDeleteFlag(true)
+    }
+
+    /**
+     * @method editActive
+     * @param {*} data 
+     * @description 编辑活动
+     */
+
+     const editActive = (data) => {
+        setCurrentNode(data)
+        setAddNewFlag(true)
+     }
+
+     /**
+      * @method clickSeeData
+      * @param data
+      * @description 点击数据查看
+      */
+     const clickSeeData = (data) => {
+        setCurrentNode(data)
+        setSeeDataFlag(true)
+     }
+
+    /**
+     * @method in_outLine
+     * @description 上下线
+     */
+    const in_outLine = async (data, type) => {
+        let params = {
+            ...data
+        }
+        if (type === 'goIn') {
+            params.startTime = moment().format('YYYY-MM-DD kk:mm')
+            params.endTime = null
+        } else if (type === 'goOut') {
+            params.endTime = moment().format('YYYY-MM-DD kk:mm')
+        }
+        let res = await updateActivity({
+            ...params
+        })
+        if (res.code === 0) {
+            setActivityTableOption({
+                ...activityTableOption
+            })
+        }
+    }
 
     return (
         <div className="contentBrowsing">
             {
-                addNewFlag && <AddNewP {...{ addNewFlag, setAddNewFlag, setActivityTableOption }}></AddNewP>
+                addNewFlag && <AddNewP {...{ addNewFlag, setAddNewFlag, currentNode,setCurrentNode, setActivityTableOption }}></AddNewP>
+            }
+            {
+                deleteFlag && <DeleteActivityM {...{ deleteFlag, setDeleteFlag, currentNode,setCurrentNode, getActivityList }}></DeleteActivityM>
+            }
+            {
+                seeDataFlag && <SeeData {...{ seeDataFlag, setSeeDataFlag,currentNode,setCurrentNode }}></SeeData>
             }
             <div className="topOptions">
                 <div>

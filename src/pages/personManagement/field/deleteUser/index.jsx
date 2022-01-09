@@ -25,7 +25,7 @@ const DeleteUserM = (props) => {
             footer={null}
         >
             <div style={{ textAlign: 'center', margin: '20px 0 40px' }}>
-                确定删除<span style={{ color: 'red' }}>{currentUser.name}</span>
+                确定删除<span style={{ color: 'red', marginLeft: '6px' }}>{currentUser.name}</span>
             </div>
             <div style={{ textAlign: 'center' }}>
                 <Button htmlType="submit" onClick={handleCancel}>

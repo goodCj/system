@@ -14,7 +14,8 @@ export const createUser = (params) => {
     return service({
         url: '/admin/user/create',
         method: 'POST',
-        data: params
+        data: params,
+        hideLoading: true
     })
 }
 
@@ -23,7 +24,8 @@ export const updateUser = (params) => {
     return service({
         url: '/admin/user/update',
         method: 'POST',
-        data: params
+        data: params,
+        hideLoading: true
     })
 }
 

@@ -31,12 +31,11 @@ const AddNewP = (props) => {
      */
     const onFinish = async (values) => {
         // 新增
-        console.log(values)
         if (!updateUserInfo.id) {
             // 编辑
             let res = await createUser({
                 ...values,
-                role: currentRole
+                role: Number(currentRole)
             })
             if (res.code === 0) {
                 message.success('创建成功', 2)
@@ -57,7 +56,7 @@ const AddNewP = (props) => {
             // 编辑
             let res = await updateUser({
                 ...values,
-                role: currentRole,
+                role: Number(currentRole),
                 jobId: updateUserInfo.jobId
             })
             if (res.code === 0) {

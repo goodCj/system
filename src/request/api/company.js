@@ -5,8 +5,7 @@ export const companyList = (params) => {
     return service({
         url: '/admin/company/list',
         method: 'POST',
-        data: params,
-        hideLoading: true
+        data: params
     })
 }
 

@@ -5,7 +5,7 @@ import LoadingT from '../components/loading';
 import { message } from 'antd';
 
 // 创建axios实例
-const service = axios.create({ timeout: 1000 * 60 })
+const service = axios.create({ timeout: 1000 * 6 })
 
 // 显示loading
 function showLoading() {
