@@ -55,23 +55,23 @@ const routes = [
             }
         ]
     },
-    {
-        title: '数据查询',
-        key: 'data-search',
-        icon: <AlignLeftOutlined />,
-        children: [
-            {
-                title: '统计数据',
-                path: '/app/dataSearch/statisticalData',
-                component: ''
-            },
-            {
-                title: '数据明细',
-                path: '/app/dataSearch/dataDetails',
-                component: ''
-            }
-        ]
-    },
+    // {
+    //     title: '数据查询',
+    //     key: 'data-search',
+    //     icon: <AlignLeftOutlined />,
+    //     children: [
+    //         {
+    //             title: '统计数据',
+    //             path: '/app/dataSearch/statisticalData',
+    //             component: ''
+    //         },
+    //         {
+    //             title: '数据明细',
+    //             path: '/app/dataSearch/dataDetails',
+    //             component: ''
+    //         }
+    //     ]
+    // },
 ]
 
 export default routes

@@ -40,7 +40,7 @@ const MaterialBrowsing = () => {
                         {
                             data.tags.length > 0 ?
                                 data.tags.map(item => {
-                                    return <Tag color="blue" key={item.tag.id}>{item.tag.name}</Tag>
+                                    return item.tag ? <Tag color="blue" key={item.tag.id}>{item.tag.name}</Tag> : '-'
                                 }) : '-'
                         }
                     </>

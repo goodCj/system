@@ -7,6 +7,7 @@ import moment from 'moment'
 import AddNewP from './addNew';
 import DeleteActivityM from './deleteActivity';
 import SeeData from './seeData';
+import Remind from './remind'
 const { Option } = Select;
 
 const ContentBrowsing = () => {
@@ -83,7 +84,7 @@ const ContentBrowsing = () => {
                         {
                             data.tags.length > 0 ?
                                 data.tags.map(item => {
-                                    return <Tag color="blue" key={item.tag.id}>{item.tag.name}</Tag>
+                                    return  item.tag ? <Tag color="blue" key={item.tag.id}>{item.tag.name}</Tag> : '-'
                                 }) : '-'
                         }
                     </>
@@ -99,7 +100,7 @@ const ContentBrowsing = () => {
                             data.startTime = moment(data.startTime, 'YYYY-MM-DD')
                             editActive(data)
                         }}>编辑</span>
-                        <span className='actions' style={{ cursor: 'pointer' }}>提醒</span>
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickRemind(data)}>提醒</span>
                         <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
                         {
                             (data.status === '未开始' || data.status === '已结束') &&
@@ -129,6 +130,7 @@ const ContentBrowsing = () => {
     const [currentNode, setCurrentNode] = useState()
     const [deleteFlag, setDeleteFlag] = useState(false)
     const [seeDataFlag, setSeeDataFlag] = useState(false)
+    const [remindFlag, setRemindFlag] = useState(false)
 
 
     useEffect(() => {
@@ -178,6 +180,15 @@ const ContentBrowsing = () => {
                 data: newData
             })
         }
+    }
+
+    /**
+     * @method clickRemind
+     * @description 点击提醒
+     */
+     const clickRemind = (data) => {
+        setCurrentNode(data)
+        setRemindFlag(true)
     }
 
     /**
@@ -244,6 +255,9 @@ const ContentBrowsing = () => {
             }
             {
                 seeDataFlag && <SeeData {...{ seeDataFlag, setSeeDataFlag,currentNode,setCurrentNode }}></SeeData>
+            }
+            {
+                remindFlag && <Remind {...{ remindFlag, setRemindFlag,currentNode,setCurrentNode }}></Remind>
             }
             <div className="topOptions">
                 <div>
