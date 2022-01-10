@@ -96,12 +96,15 @@ const ContentBrowsing = () => {
             render: (text, data) => {
                 return (
                     <>
+                    {
+                        showFlag ? 
+                        <>
                         <span className='actions' style={{ cursor: 'pointer' }} onClick={() => {
                             data.startTime = moment(data.startTime, 'YYYY-MM-DD')
                             editActive(data)
                         }}>编辑</span>
-                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickRemind(data)}>提醒</span>
                         <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickRemind(data)}>提醒</span>
                         {
                             (data.status === '未开始' || data.status === '已结束') &&
                             <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goIn')}>上线</span>
@@ -111,6 +114,8 @@ const ContentBrowsing = () => {
                             <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goOut')}>下线</span>
                         }
                         <span className='actions edit' style={{ cursor: 'pointer' }} onClick={() => openDeleteM(data)}>删除</span>
+                        </>:<span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
+                    }
                     </>
                 )
             }
@@ -131,6 +136,8 @@ const ContentBrowsing = () => {
     const [deleteFlag, setDeleteFlag] = useState(false)
     const [seeDataFlag, setSeeDataFlag] = useState(false)
     const [remindFlag, setRemindFlag] = useState(false)
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const showFlag = !(userInfo.role > 1)
 
 
     useEffect(() => {
@@ -261,11 +268,13 @@ const ContentBrowsing = () => {
             }
             <div className="topOptions">
                 <div>
-                    <Button
+                    {
+                        showFlag && <Button
                         className='addNewP'
                         type="primary"
                         onClick={() => setAddNewFlag(true)}
                     >新增活动</Button>
+                    }
                 </div>
                 <div>
                     <Select className='selectType' defaultValue={selectVal} onChange={(v) => setSelectVal(v)}>

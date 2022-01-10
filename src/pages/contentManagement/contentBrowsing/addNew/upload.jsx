@@ -31,7 +31,7 @@ const ActiveImg = (props) => {
             status: 'done'
         }])
         setFile(res)
-        setImg(res.url)
+        setImg(`https://${res.url}`)
     }
     /**
      * @method removeFile

@@ -6,10 +6,13 @@ const createRoute = (routes) => {
     let arr = []
     function rr(routes) {
         routes.map(item => {
-            if (item.children?.length > 0) {
-                rr(item.children)
-            } else {
-                arr.push(<Route exact key={String(item.path)} path={item.path} component={item.component}></Route>)
+            if (item.show) {
+                console.log(item)
+                if (item.children?.length > 0) {
+                    rr(item.children)
+                } else {
+                    arr.push(<Route exact key={String(item.path)} path={item.path} component={item.component}></Route>)
+                }
             }
         })
     }

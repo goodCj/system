@@ -67,7 +67,7 @@ const FieldManagement = () => {
                 return (
                     <>
                         <span className='actions' style={{ cursor: 'pointer' }} onClick={() => updateUser(data)}>编辑</span>
-                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => isActivateUser(data)}>{ data.status === '0' ? '激活' : '停用' }</span>
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => isActivateUser(data)}>{data.status === '0' ? '激活' : '停用'}</span>
                         <span className='actions edit' style={{ cursor: 'pointer' }} onClick={() => openDeleteM(data)}>删除</span>
                     </>
                 )
@@ -98,6 +98,11 @@ const FieldManagement = () => {
     const [updateUserInfo, setUpdateUserInfo] = useState({})
     const [deleteUserFlag, setDeleteUserFlag] = useState(false)
     const [currentUser, setCurrentUser] = useState({})
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const showFlag = !(userInfo.role > 1)
+    if(!showFlag){
+        columns.pop()
+    }
 
     useEffect(() => {
         initTable()
@@ -107,7 +112,7 @@ const FieldManagement = () => {
      * @method handlerShrink
      * @description 点击是否隐藏左侧搜索
      */
-     const handlerShrink = () => {
+    const handlerShrink = () => {
         setIsShrink(!isShrink)
     }
 
@@ -115,7 +120,7 @@ const FieldManagement = () => {
      * @method BatchOptions
      * @returns 批量操作的内容
      */
-     const BatchOptions = () => {
+    const BatchOptions = () => {
         return (
             <div className='btnGroup'>
                 <Button type="text" onClick={() => setBatchImportFlag(true)}>导入</Button>
@@ -206,19 +211,19 @@ const FieldManagement = () => {
             jobId: data.jobId,
             status: data.status === '1' ? '0' : '1'
         })
-        if(res.code === 0){
+        if (res.code === 0) {
             let newData = outworkerData.data.map(item => {
-                if(item.jobId === data.jobId){
+                if (item.jobId === data.jobId) {
                     item.status = data.status === '1' ? '0' : '1'
                 }
                 return item
             })
-            if(currentRole === 3){
+            if (currentRole === 3) {
                 setOutworkerData({
                     ...outworkerData,
                     data: newData
                 })
-            }else {
+            } else {
                 setOfficeworkerData({
                     ...officeworkerData,
                     data: newData
@@ -239,7 +244,7 @@ const FieldManagement = () => {
         let res = await _deleteUser({
             jobId: currentUser.jobId
         })
-        if(res.code === 0){
+        if (res.code === 0) {
             message.success('删除成功')
             setDeleteUserFlag(false)
             initTable()
@@ -250,7 +255,7 @@ const FieldManagement = () => {
         <div className='field'>
             {/* 添加新用户 */}
             {
-                addNewFlag && <AddNewP { ...{updateUserInfo, addNewFlag, setAddNewFlag, currentRole, setOutworkerDataOptions, setOfficeworkerDataOptions } }></AddNewP>
+                addNewFlag && <AddNewP {...{ updateUserInfo, addNewFlag, setAddNewFlag, currentRole, setOutworkerDataOptions, setOfficeworkerDataOptions }}></AddNewP>
             }
             {/* 删除新用户 */}
             {
@@ -298,21 +303,25 @@ const FieldManagement = () => {
                         <div className='right-table-content'>
                             <div className="top-options">
                                 <div className="left-button">
-                                    <Button
-                                        className='addNewP'
-                                        type="primary"
-                                        onClick={() => { setAddNewFlag(true); setUpdateUserInfo({}) }}
-                                    >新增员工</Button>
-                                    <Popover
-                                        placement="bottom"
-                                        content={<BatchOptions />}
-                                        arrowPointAtCenter
-                                        trigger="hover">
-                                        <Button className='batch'>
-                                            批量操作<DownOutlined className='arrow' />
-                                        </Button>
-                                    </Popover>
+                                    {
+                                        showFlag && <>
+                                            <Button
+                                                className='addNewP'
+                                                type="primary"
+                                                onClick={() => { setAddNewFlag(true); setUpdateUserInfo({}) }}
+                                            >新增员工</Button>
+                                            <Popover
+                                                placement="bottom"
+                                                content={<BatchOptions />}
+                                                arrowPointAtCenter
+                                                trigger="hover">
+                                                <Button className='batch'>
+                                                    批量操作<DownOutlined className='arrow' />
+                                                </Button>
+                                            </Popover>
+                                        </>
 
+                                    }
                                 </div>
                                 <div className="right-search">
                                     <Input prefix={<SearchOutlined className='searchIcon' />} onChange={dbSearchUser} placeholder='请输入姓名或手机号' />

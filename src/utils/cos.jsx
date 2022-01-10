@@ -35,7 +35,8 @@ class Upload{
                 Bucket: 'img-1303063528',
                 Region: 'ap-shanghai',
                 Key: `${randomString(6)}-${file.name.split('.')[0]}`,
-                Body: file
+                Body: file,
+                ContentType: file.type
             },
             (err, data) => {
                 if(err === null){

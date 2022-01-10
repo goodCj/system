@@ -84,41 +84,44 @@ const Main = () => {
                         >
                             {
                                 routes.map((item, index) => {
-                                    if (item.children?.length > 0) {
-                                        return (
-                                            <SubMenu
-                                                key={item.key ? item.key : item.path}
-                                                icon={item.icon}
-                                                title={item.title}>
-                                                {
-                                                    item.children.map((subItem, subIndex) => {
-                                                        return (
-                                                            <Menu.Item
-                                                                key={subItem.key ? subItem.key : subItem.path}
-                                                            >
-                                                                <Link to={subItem.path}>
-                                                                    {/* {item.icon && <Icon type={item.icon} />} */}
-                                                                    <span>{subItem.title}</span>
-                                                                </Link>
-                                                            </Menu.Item>
-                                                        )
-                                                    })
-                                                }
-                                            </SubMenu>
-
-                                        )
-                                    } else {
-                                        return (
-                                            <Menu.Item
-                                                key={item.key ? item.key : item.path}
-                                                icon={item.icon}
-                                            >
-                                                <Link to={item.path}>
-                                                    {/* {item.icon && <Icon type={item.icon} />} */}
-                                                    <span>{item.title}</span>
-                                                </Link>
-                                            </Menu.Item>
-                                        )
+                                    if(item.show){
+                                        if (item.children?.length > 0) {
+                                            return (
+                                                <SubMenu
+                                                    key={item.key ? item.key : item.path}
+                                                    icon={item.icon}
+                                                    title={item.title}>
+                                                    {
+                                                        item.children.map((subItem, subIndex) => {
+                                                            if(!subItem.show) return
+                                                            return (
+                                                                <Menu.Item
+                                                                    key={subItem.key ? subItem.key : subItem.path}
+                                                                >
+                                                                    <Link to={subItem.path}>
+                                                                        {/* {item.icon && <Icon type={item.icon} />} */}
+                                                                        <span>{subItem.title}</span>
+                                                                    </Link>
+                                                                </Menu.Item>
+                                                            )
+                                                        })
+                                                    }
+                                                </SubMenu>
+    
+                                            )
+                                        } else {
+                                            return (
+                                                <Menu.Item
+                                                    key={item.key ? item.key : item.path}
+                                                    icon={item.icon}
+                                                >
+                                                    <Link to={item.path}>
+                                                        {/* {item.icon && <Icon type={item.icon} />} */}
+                                                        <span>{item.title}</span>
+                                                    </Link>
+                                                </Menu.Item>
+                                            )
+                                        }
                                     }
                                 })
                             }

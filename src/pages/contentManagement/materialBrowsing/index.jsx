@@ -82,6 +82,11 @@ const MaterialBrowsing = () => {
     })
     const [selectVal, setSelectVal] = useState('title')
     const [deleteFlag, setDeleteFlag] = useState(false)
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const showFlag = !(userInfo.role > 1)
+    if(!showFlag){
+        columns.pop()
+    }
 
 
     useEffect(() => {
@@ -147,11 +152,13 @@ const MaterialBrowsing = () => {
             }
             <div className="topOptions">
                 <div>
-                    <Button
+                    {
+                        showFlag && <Button
                         className='addNewP'
                         type="primary"
                         onClick={() => setAddNewFlag(true)}
                     >新增素材</Button>
+                    }
                 </div>
                 <div>
                     <Select className='selectType' defaultValue={selectVal} onChange={(v) => setSelectVal(v)}>

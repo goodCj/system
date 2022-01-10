@@ -128,3 +128,23 @@ export const getActiveData = (params) => {
         data: params
     })
 }
+
+// 获取所有的外勤人员
+export const getAllPerson = (params) => {
+    return service({
+        url: '/admin/user/allList',
+        method: 'POST',
+        hideLoading: true,
+        data: params
+    })
+}
+
+// 活动提醒
+export const remindActive = (params) => {
+    return service({
+        url: '/admin/activeRemind/create',
+        method: 'POST',
+        hideLoading: true,
+        data: params
+    })
+}
