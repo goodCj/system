@@ -31,10 +31,6 @@ const TableView = (props) => {
         })
     }
 
-    useEffect(() => {
-        console.log(data.total)
-    }, [data])
-
     return (
         <>
             <Table

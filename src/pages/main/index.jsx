@@ -4,7 +4,7 @@ import * as echarts  from 'echarts';
 import { Menu, Tabs } from 'antd';
 
 import { QuestionCircleOutlined, CaretUpOutlined } from '@ant-design/icons'
-import { wxuser, active, activeDetails, activeRank } from '~request/api/statistical';
+import { _wxuser, _active, activeDetails, activeRank } from '~request/api/statistical';
 
 const { TabPane } = Tabs;
 
@@ -88,10 +88,11 @@ const Test = () => {
     const chartRef = useRef()
 
     useEffect(() => {
-        wxuser().then((res) => {
+        _wxuser().then((res) => {
+            console.log(res)
             setWxUser(res.data)
         })
-        active().then((res) => {
+        _active().then((res) => {
             setActiveData(res.data)
         })
     }, [])

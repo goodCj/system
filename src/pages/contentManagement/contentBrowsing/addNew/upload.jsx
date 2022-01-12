@@ -38,7 +38,6 @@ const ActiveImg = (props) => {
      * @description 移除文件
      */
     const removeFile = (file) => {
-        console.log(111)
         setFileList([])
         setImg('')
     }

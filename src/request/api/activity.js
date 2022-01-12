@@ -5,7 +5,10 @@ export const activityList = (params) => {
     return service({
         url: '/admin/active/list',
         method: 'POST',
-        data: params
+        data: {
+            ...params,
+            belongCompany: JSON.parse(localStorage.getItem('currentCompany')).id
+        }
     })
 }
 

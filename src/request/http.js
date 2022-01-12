@@ -23,22 +23,40 @@ function hideLoading() {
     dom && document.getElementById('layout-content')?.removeChild(dom)
 }
 
+const changeConfig = (config) => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    console.log(userInfo)
+    const currentCompany = JSON.parse(localStorage.getItem('currentCompany'))
+    console.log(config)
+    console.log('------',userInfo, currentCompany)
+    if (!config.noCompany) {
+        if (userInfo?.role === 0 && currentCompany) {
+            if(!config.data){
+                config.data = {}
+            }
+            config.data.belongCompany = currentCompany.id
+        }else if(userInfo?.role === 0 && !currentCompany){
+            return
+        }
+    }
+    return config
+}
+
 // 请求拦截器
 service.interceptors.request.use(
     config => {
         const token = localStorage.getItem('token')
-        console.log(config)
         if (!config.hideLoading) {
             showLoading()
         }
         if (token) {
-            config.headers.Authorization = `Bearer ${ token }`
+            config.headers.Authorization = `Bearer ${token}`
         } else {
             if (window.location.hash.indexOf('login') === -1) {
                 window.location.hash = '/login'
             }
         }
-        return config
+        return changeConfig(config)
     },
     error => {
         console.log(error)
@@ -62,7 +80,7 @@ service.interceptors.response.use(
     },
     error => {
         hideLoading()
-        message.error('服务器错误，请稍后重试', 2)
+        // message.error('服务器错误，请稍后重试', 2)
     }
 )
 

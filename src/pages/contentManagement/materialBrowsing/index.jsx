@@ -6,6 +6,7 @@ import moment from 'moment'
 import './index.scss'
 import AddNewP from './addNew';
 import DeleteMaterialM from './deleteMaterial';
+import { render } from '@testing-library/react';
 const { Option } = Select;
 
 const MaterialBrowsing = () => {
@@ -31,6 +32,12 @@ const MaterialBrowsing = () => {
         {
             title: '素材内容',
             dataIndex: 'content'
+        },
+        {
+            title: '素材类型',
+            render(text, data){
+                return data.type === 1 ? '营销素材' : '朋友圈素材'
+            }
         },
         {
             title: '素材标签',
@@ -83,7 +90,7 @@ const MaterialBrowsing = () => {
     const [selectVal, setSelectVal] = useState('title')
     const [deleteFlag, setDeleteFlag] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    const showFlag = !(userInfo.role > 1)
+    const showFlag = !(userInfo?.role > 1)
     if(!showFlag){
         columns.pop()
     }
@@ -127,7 +134,6 @@ const MaterialBrowsing = () => {
         let res = await materialList(params)
         if (res.code === 0) {
             let data = res.data.list
-            console.log(data)
             let newData = data.map(item => {
                 return {
                     ...item,

@@ -4,12 +4,14 @@ import routes from '~route/config';
 import { Layout, Menu, Button, Popover } from 'antd';
 import { useState } from 'react/cjs/react.development';
 import { Link, useHistory } from 'react-router-dom';
+import { companyList } from "~request/api/company";
 import React, { useEffect } from 'react';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     PoweroffOutlined
 } from '@ant-design/icons';
+import AddNewP from './addCompany';
 const { Header, Sider, Content } = Layout;
 
 const { SubMenu } = Menu;
@@ -24,8 +26,26 @@ const Main = () => {
     // 是否闭合导航
     const [collapsed, setCollapsed] = useState(false)
     const history = useHistory()
+    const localCompany = localStorage.getItem('currentCompany')
+    const [currentCompany, setCurrentCompany] = useState()
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    console.log(userInfo)
+    const [companyFlag, setCompanyFlag] = useState(false)
+    const [list, setList] = useState()
+    const [currentPage, setCurrentPage] = useState(['/app/main'])
+    useEffect(() => {
+        const pageKey = sessionStorage.getItem('currentMenu')
+        if (pageKey) {
+            setCurrentPage([pageKey])
+        }
+        if(userInfo?.role === 0) getCompanylist()
+    }, [])
+
+    useEffect(() => {
+        if (currentCompany) {
+            localStorage.setItem('currentCompany', JSON.stringify(currentCompany))
+        }
+    }, [currentCompany])
+    const [addNewFlag, setAddNewFlag] = useState(false)
 
     /**
      * @method onOpenChange
@@ -40,7 +60,6 @@ const Main = () => {
             setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
         }
     };
-
     /**
      * @method toggleCollapsed
      * @description 设置是否闭合路由导航
@@ -55,9 +74,65 @@ const Main = () => {
      */
     const logout = () => {
         localStorage.removeItem('token')
+        localStorage.removeItem('userInfo')
+        localStorage.removeItem('currentCompany')
+        sessionStorage.removeItem('currentMenu')
         history.push('/login')
     }
 
+    /**
+     * @method getCompanylist
+     * @description 获取公司列表
+     */
+    const getCompanylist = async () => {
+        let res = await companyList({
+            count: 100,
+            offset: 0
+        })
+        if (res.code === 0) {
+            if (res.data.list.length > 0) {
+                if (!localCompany) {
+                    setCurrentCompany(res.data.list[0])
+                } else {
+                    setCurrentCompany(JSON.parse(localCompany))
+                }
+            } else {
+                localStorage.removeItem('currentCompany')
+                setCurrentCompany(null)
+                setAddNewFlag(true)
+            }
+        }
+    }
+
+    useEffect(() => {
+        (async () => {
+            if (companyFlag) {
+                let { data: { list } } = await companyList({
+                    count: 100,
+                    offset: 0
+                })
+                setList(list)
+            } else {
+                setList([])
+            }
+        })()
+    }, [companyFlag])
+
+    const CompanyContent = () => {
+        const changeCompany = (item) => {
+            setCurrentCompany(item)
+            window.location.reload()
+        }
+        return (
+            <div className='allCompany'>
+                {
+                    list.map(item => {
+                        return <div className={currentCompany?.id === item.id ? 'companyPart activeCompany' : 'companyPart'} key={item.id} onClick={() => changeCompany(item)}>{item.companyName}</div>
+                    })
+                }
+            </div>
+        )
+    }
     // 用户操作
     const userOptions = (
         <div className='userOptions'>
@@ -65,8 +140,17 @@ const Main = () => {
         </div>
     )
 
+    const selectMenu = (menu) => {
+        sessionStorage.setItem('currentMenu', menu.key)
+        setCurrentPage([menu.key])
+    }
+
     return (
         <div className="content-container">
+            {/* 添加新公司 */}
+            {
+                addNewFlag && <AddNewP { ...{addNewFlag, setAddNewFlag } }></AddNewP>
+            }
             <Layout className='layout-container'>
                 <Sider width='260' trigger={null} className='layout-sider' collapsed={collapsed} collapsible>
                     <div className="logo-title">
@@ -80,11 +164,12 @@ const Main = () => {
                             theme="dark"
                             openKeys={openKeys}
                             onOpenChange={onOpenChange}
-                            defaultSelectedKeys={['/app/main']}
+                            selectedKeys={currentPage}
+                            onSelect={selectMenu}
                         >
                             {
                                 routes.map((item, index) => {
-                                    if(item.show){
+                                    if (item.show) {
                                         if (item.children?.length > 0) {
                                             return (
                                                 <SubMenu
@@ -93,7 +178,7 @@ const Main = () => {
                                                     title={item.title}>
                                                     {
                                                         item.children.map((subItem, subIndex) => {
-                                                            if(!subItem.show) return
+                                                            if (!subItem.show) return
                                                             return (
                                                                 <Menu.Item
                                                                     key={subItem.key ? subItem.key : subItem.path}
@@ -107,7 +192,7 @@ const Main = () => {
                                                         })
                                                     }
                                                 </SubMenu>
-    
+
                                             )
                                         } else {
                                             return (
@@ -130,13 +215,27 @@ const Main = () => {
                 </Sider>
                 <Layout>
                     <Header className='layout-header'>
-                        <div className='toggleBtn' onClick={toggleCollapsed}>
+                        <div className='leftContent'>
+                            <div className='toggleBtn' onClick={toggleCollapsed}>
+                                {
+                                    collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
+                                }
+                            </div>
                             {
-                                collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
+                                userInfo?.role === 0 &&
+                                <div className='companyList'>
+                                    公司：{
+                                        currentCompany ?
+                                            <Popover visible={list?.length > 0 && companyFlag} placement="bottom" content={companyFlag && <CompanyContent />} trigger="hover" onVisibleChange={(v) => setCompanyFlag(v)}>
+                                                <span className='companyName'>{currentCompany?.companyName}</span>
+                                            </Popover>
+                                            : <span className='noCompanyData'>当前无数据，请创建新公司后刷新页面</span>
+                                    }
+                                </div>
                             }
                         </div>
                         <div className='userInfoBox'>
-                            <div className='logout'>欢迎您,<Popover placement="bottomRight" content={userOptions}><span>{ userInfo?.name }</span></Popover></div>
+                            <div className='logout'>欢迎您,<Popover placement="bottomRight" content={userOptions}><span>{userInfo?.name}</span></Popover></div>
                         </div>
                     </Header>
                     <Content className='layout-content' id='layout-content'>

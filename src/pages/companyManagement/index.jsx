@@ -39,6 +39,7 @@ const CompanyManagement = () => {
     })
     const [deleteFlag, setDeleteFlag] = useState(false)
     const [deleteCompany, setDeleteCompany] = useState()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     useEffect(() => {
         getCompanylist()
     }, [companyDataOptions])
@@ -48,7 +49,11 @@ const CompanyManagement = () => {
      * @description 删除用户
      */
       const openDeleteM = (data) => {
-          console.log(data)
+        let currentCompany = JSON.parse(localStorage.getItem('currentCompany'))
+        if(userInfo.role !== 0 && currentCompany.id === data.id) {
+            message.warning('当前公司已被选择，不能删除！')
+            return
+        }
         setDeleteCompany(data)
         setDeleteFlag(true)
     }

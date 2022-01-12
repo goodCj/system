@@ -6,7 +6,8 @@ export const isLogin = (params) => {
         url: '/common/login',
         method: 'POST',
         data: params,
-        hideLoading: true
+        hideLoading: true,
+        noCompany: true
     })
 }
 
@@ -16,6 +17,7 @@ export const getUserInfo = (params) => {
         url: '/admin/user/info',
         method: 'POST',
         hideLoading: true,
-        data: params
+        data: params,
+        noCompany: true
     })
 }

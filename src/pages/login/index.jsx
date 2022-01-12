@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { isLogin, getUserInfo } from '~request/api/base';
+import { companyList } from "~request/api/company";
 
 const Login = () => {
     const [account, setAccount] = useState('')
@@ -30,21 +31,20 @@ const Login = () => {
             let res = await isLogin(params)
             setLoadingFlag(false)
             if(res && res.code === 0){
-                message.success('登录成功', 2)
                 localStorage.setItem('token', res.data.token)
-                getUser()
-                history.push('/')
+                let userData =  await getUserInfo()
+                let companyData = await companyList({
+                    count: 100,
+                    offset: 0
+                })
+                localStorage.setItem('userInfo', JSON.stringify(userData.data))
+                localStorage.setItem('currentCompany', JSON.stringify(companyData.data.list[0]))
+                setTimeout(() => {
+                    history.push('/')
+                    message.success('登录成功', 2)
+                }, 200);
             }
         })()
-    }
-
-    /**
-     * @method getUserInfo
-     * @description 获取用户信息
-     */
-     const getUser =async () => {
-        let data = await getUserInfo()
-        localStorage.setItem('userInfo', JSON.stringify(data.data))
     }
 
     return (

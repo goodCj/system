@@ -137,7 +137,7 @@ const ContentBrowsing = () => {
     const [seeDataFlag, setSeeDataFlag] = useState(false)
     const [remindFlag, setRemindFlag] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    const showFlag = !(userInfo.role > 1)
+    const showFlag = !(userInfo?.role > 1)
 
 
     useEffect(() => {

@@ -317,7 +317,6 @@ const TagManagement = () => {
      * @description 删除用户
      */
      const openDeleteM = (data) => {
-         console.log(data)
          setCurrentDelete(data)
         setDeleteFlag(true)
     }
@@ -331,9 +330,6 @@ const TagManagement = () => {
             getTagList(3, currentNode.id)
         }
     }
-    useEffect(() => {
-        console.log(currentNode)
-    }, [currentNode])
 
     return (
         <div className="tagManagement">

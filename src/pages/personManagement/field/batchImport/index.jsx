@@ -32,7 +32,6 @@ const BatchImport = (props) => {
      * @description 上传文件
      */
     const uploadFile = async (info) => {
-        console.log(info.file)
         let res = await _batchImportUser({
             role: currentRole,
             type: radioValue,

@@ -1,16 +1,16 @@
 import service from "../http";
 
 // 获取用户数据
-export const wxuser = (data) => {
+export const _wxuser = (data) => {
     return service({
         url: '/admin/statistical/wxuser',
         method: 'POST',
-        data,
+        data
     })
 }
 
 // 获取活动数据
-export const active = (data) => {
+export const _active = (data) => {
     return service({
         url: '/admin/statistical/active',
         method: 'POST',

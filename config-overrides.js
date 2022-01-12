@@ -11,12 +11,14 @@ const addDevServer = () => config => {
                 target: "http://yamingzhang.com:3000/",
                 changeOrigin: true,
                 secure: true,
+                logLevel: 'info'
             },
             "/common": {
                 // target: "http://localhost:3000",
                 target: "http://yamingzhang.com:3000/",
                 changeOrigin: true,
                 secure: true,
+                logLevel: 'info'
             }
         },
     }

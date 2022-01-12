@@ -17,7 +17,6 @@ class Upload{
                     bucket: 'img-1303063528',
                     region: 'ap-shanghai'
                 }).then(config => {
-                    console.log(config)
                     callback({
                         TmpSecretId: config.data.credentials.tmpSecretId,
                         TmpSecretKey: config.data.credentials.tmpSecretKey,

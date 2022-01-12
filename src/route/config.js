@@ -13,8 +13,6 @@ const FieldManagement = lazy(() => import('../pages/personManagement/field'))
 const TagManagement = lazy(() => import('../pages/contentManagement/tagManagement/index'))
 const ContentBrowsing = lazy(() => import('../pages/contentManagement/contentBrowsing/index'))
 const MaterialBrowsing = lazy(() => import('../pages/contentManagement/materialBrowsing/index'))
-const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-console.log(userInfo.role)
 const routes = [
     {
         path: '/app/main',
@@ -28,7 +26,7 @@ const routes = [
         path: '/app/companyManagement',
         icon: <TeamOutlined />,
         component: CompanyManagement,
-        show: userInfo.role === 0 ? false : true
+        show: false
     },
     {
         title: '人员管理',
@@ -59,7 +57,7 @@ const routes = [
                 title: '标签管理',
                 path: '/app/contentManagement/tagManagement',
                 component: TagManagement,
-                show: userInfo.role > 1 ? false : true
+                show: true
             }
         ]
     },

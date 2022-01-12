@@ -99,7 +99,7 @@ const FieldManagement = () => {
     const [deleteUserFlag, setDeleteUserFlag] = useState(false)
     const [currentUser, setCurrentUser] = useState({})
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    const showFlag = !(userInfo.role > 1)
+    const showFlag = !(userInfo?.role > 1)
     if(!showFlag){
         columns.pop()
     }
@@ -170,22 +170,31 @@ const FieldManagement = () => {
      * @description 初始化表格
      */
     const initTable = async () => {
+        let params = {}
+        if(userInfo?.role === 0 && localStorage.getItem('currentCompany')){
+            const currentCompany =  JSON.parse(localStorage.getItem('currentCompany'))
+            params.belongCompany = currentCompany.id
+        }
         if (Number(currentRole) === 3) {
-            // 外勤
-            let res = await getUserList({
+            params = {
+                ...params,
                 ...outworkerDataOptions,
                 role: 3
-            })
+            }
+            // 外勤
+            let res = await getUserList(params)
             setOutworkerData({
                 data: res.data.list,
                 total: res.data.count
             })
         } else {
-            // 内勤
-            let res = await getUserList({
+            params = {
+                ...params,
                 ...officeworkerDataOptions,
                 role: 2
-            })
+            }
+            // 内勤
+            let res = await getUserList(params)
             setOfficeworkerData({
                 data: res.data.list,
                 total: res.data.count

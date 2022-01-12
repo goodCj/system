@@ -5,7 +5,9 @@ export const companyList = (params) => {
     return service({
         url: '/admin/company/list',
         method: 'POST',
-        data: params
+        data: params,
+        hideLoading: true,
+        noCompany: true
     })
 }
 
@@ -14,7 +16,8 @@ export const addCompany = (params) => {
     return service({
         url: '/admin/company/create',
         method: 'POST',
-        data: params
+        data: params,
+        noCompany: true
     })
 }
 
@@ -24,6 +27,7 @@ export const _deleteCompany = (params) => {
         url: '/admin/company/delete',
         method: 'POST',
         data: params,
-        hideLoading: true
+        hideLoading: true,
+        noCompany: true
     })
 }

@@ -1,11 +1,22 @@
-import { Modal, Form, Input, Button, message, TreeSelect } from 'antd';
+import { Modal, Form, Input, Button, message, TreeSelect, Select } from 'antd';
 import { addNewMaterial, addNewMaterialTag, updateMaterial } from '~request/api/material';
 import { useRef, useEffect, useState } from 'react';
 import { tagList } from '~request/api/tag';
 const { TreeNode } = TreeSelect;
-
+const { Option } = Select;
+const { TextArea } = Input;
+const options = [
+    {
+        value: 1,
+        name: '营销素材'
+    },
+    {
+        value: 2,
+        name: '朋友圈素材'
+    }
+]
 const AddNewP = (props) => {
-    const { addNewFlag, setAddNewFlag, currentNode, setMaterialTableOption } = props
+    const { addNewFlag, setAddNewFlag, currentNode,setCurrentNode, setMaterialTableOption } = props
     const formRef = useRef()
     const [addTag, setAddTag] = useState([])
     const [tagListData, setTagListData] = useState([])
@@ -30,6 +41,7 @@ const AddNewP = (props) => {
      */
     const handleCancel = () => {
         setAddNewFlag(false)
+        setCurrentNode(null)
     }
 
     /**
@@ -161,12 +173,24 @@ const AddNewP = (props) => {
                     </TreeSelect>
                 </Form.Item>
                 <Form.Item
+                    label="素材类型"
+                    name="type"
+                    rules={[{ required: true, message: '请选择素材类型' }]}
+                >
+                    <Select>
+                        {
+                            options.map(item => {
+                                return <Option key={item.value} value={item.value}>{item.name}</Option>
+                            })
+                        }
+                    </Select>
+                </Form.Item>
+                <Form.Item
                     label="素材内容"
                     name="content"
-                    type='textarea'
                     rules={[{ required: true, message: '请输入素材内容' }]}
                 >
-                    <Input />
+                    <TextArea rows={4}/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
