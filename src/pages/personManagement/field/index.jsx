@@ -221,18 +221,24 @@ const FieldManagement = () => {
             status: data.status === '1' ? '0' : '1'
         })
         if (res.code === 0) {
-            let newData = outworkerData.data.map(item => {
-                if (item.jobId === data.jobId) {
-                    item.status = data.status === '1' ? '0' : '1'
-                }
-                return item
-            })
             if (currentRole === 3) {
+                let newData = outworkerData.data.map(item => {
+                    if (item.jobId === data.jobId) {
+                        item.status = data.status === '1' ? '0' : '1'
+                    }
+                    return item
+                })
                 setOutworkerData({
                     ...outworkerData,
                     data: newData
                 })
             } else {
+                let newData = officeworkerData.data.map(item => {
+                    if (item.jobId === data.jobId) {
+                        item.status = data.status === '1' ? '0' : '1'
+                    }
+                    return item
+                })
                 setOfficeworkerData({
                     ...officeworkerData,
                     data: newData
@@ -264,7 +270,7 @@ const FieldManagement = () => {
         <div className='field'>
             {/* 添加新用户 */}
             {
-                addNewFlag && <AddNewP {...{ updateUserInfo, addNewFlag, setAddNewFlag, currentRole, setOutworkerDataOptions, setOfficeworkerDataOptions }}></AddNewP>
+                addNewFlag && <AddNewP {...{ updateUserInfo, setUpdateUserInfo, addNewFlag, setAddNewFlag, currentRole, setOutworkerDataOptions, setOfficeworkerDataOptions }}></AddNewP>
             }
             {/* 删除新用户 */}
             {

@@ -1,20 +1,18 @@
 import './index.scss'
-import { Modal, Form, Input, InputNumber, Button, Checkbox, message } from 'antd';
+import { Modal, Form, Input, Button, message } from 'antd';
 import { createUser, updateUser } from '~request/api/user';
 import { useRef, useEffect } from 'react';
 
-const initialValues = {
-    username: '',
-    tel: ''
-}
-
 const AddNewP = (props) => {
-    const { updateUserInfo, addNewFlag, setAddNewFlag, currentRole, setOutworkerDataOptions, setOfficeworkerDataOptions } = props
+    const { updateUserInfo, setUpdateUserInfo, addNewFlag, setAddNewFlag, currentRole, setOutworkerDataOptions, setOfficeworkerDataOptions } = props
     const formRef = useRef()
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 
     useEffect(() => {
         formRef.current.resetFields()
+        console.log(props)
     }, [])
+
 
     /**
      * @method handleCancel
@@ -22,6 +20,7 @@ const AddNewP = (props) => {
      */
     const handleCancel = () => {
         setAddNewFlag(false)
+        setUpdateUserInfo(null)
     }
 
     /**
@@ -32,9 +31,9 @@ const AddNewP = (props) => {
     const onFinish = async (values) => {
         // 新增
         if (!updateUserInfo.id) {
-            // 编辑
             let res = await createUser({
                 ...values,
+                companyId: `${userInfo.companyId}${values.companyId}`,
                 role: Number(currentRole)
             })
             if (res.code === 0) {
@@ -57,7 +56,8 @@ const AddNewP = (props) => {
             let res = await updateUser({
                 ...values,
                 role: Number(currentRole),
-                jobId: updateUserInfo.jobId
+                jobId: updateUserInfo.jobId,
+                companyId: `${userInfo.companyId}${values.companyId}`
             })
             if (res.code === 0) {
                 message.success('编辑成功', 2)
@@ -79,7 +79,7 @@ const AddNewP = (props) => {
 
     return (
         <Modal
-            title="新增员工"
+            title={ currentRole ? '编辑员工' : '新增员工' }
             width="480px"
             className="addNewPModal"
             visible={addNewFlag}
@@ -134,11 +134,11 @@ const AddNewP = (props) => {
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="公司代码"
+                    label="机构代码"
                     name="companyId"
-                    rules={[{ required: true, message: '请输入公司代码' }]}
+                    rules={[{ required: true, message: '请输入机构代码' }]}
                 >
-                    <Input />
+                    <Input addonBefore={ userInfo.companyId }/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
