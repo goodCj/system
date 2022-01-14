@@ -45,6 +45,7 @@ const changeConfig = (config) => {
 // 请求拦截器
 service.interceptors.request.use(
     config => {
+        config.url = `/api${config.url}`
         const token = localStorage.getItem('token')
         if (!config.hideLoading) {
             showLoading()
