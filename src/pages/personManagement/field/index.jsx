@@ -1,6 +1,6 @@
 import './index.scss'
 import { CaretRightOutlined, CaretLeftOutlined, SearchOutlined, CaretDownOutlined, DownOutlined } from '@ant-design/icons'
-import { useEffect, useState } from 'react/cjs/react.development'
+import { useEffect, useState } from 'react'
 import { Input, Tree, Popover, Button, Tabs, message } from 'antd'
 import TableView from '~components/Table'
 import AddNewP from './addNewP'

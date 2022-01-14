@@ -1,6 +1,6 @@
 import { Table } from 'antd'
 import { useEffect, useRef } from 'react'
-import { useState } from 'react/cjs/react.development'
+import { useState } from 'react'
 import './index.scss'
 
 

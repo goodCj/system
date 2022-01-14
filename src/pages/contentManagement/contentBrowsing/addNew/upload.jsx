@@ -2,7 +2,7 @@ import { Upload, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import cos from '~utils/cos';
 import { useState } from 'react';
-import { useEffect } from 'react/cjs/react.development';
+import { useEffect } from 'react';
 const ActiveImg = (props) => {
     const {img, setImg} = props
     const [fileList, setFileList] = useState([])

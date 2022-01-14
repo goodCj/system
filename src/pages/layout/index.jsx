@@ -2,7 +2,7 @@ import './index.scss'
 import App from "~route"
 import routes from '~route/config';
 import { Layout, Menu, Button, Popover } from 'antd';
-import { useState } from 'react/cjs/react.development';
+import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { companyList } from "~request/api/company";
 import React, { useEffect } from 'react';

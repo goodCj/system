@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect } from "react";
 import TableView from '~components/Table'
 import { companyList } from "~request/api/company";
 import { Button, message } from 'antd'
