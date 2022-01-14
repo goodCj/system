@@ -48,7 +48,7 @@ const routes = [
                 show: true
             },
             {
-                title: '素材一览',
+                title: '朋友圈/营销话术',
                 path: '/app/contentManagement/materialBrowsing',
                 component: MaterialBrowsing,
                 show: true

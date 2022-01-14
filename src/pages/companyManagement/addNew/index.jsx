@@ -1,5 +1,4 @@
 import { Modal, Form, Input, Button, message } from 'antd';
-import { addTag } from '~request/api/tag';
 import { useRef, useEffect } from 'react';
 import { addCompany } from '~request/api/company';
 

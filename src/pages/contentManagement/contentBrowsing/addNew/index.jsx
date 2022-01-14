@@ -186,7 +186,7 @@ const AddNewP = (props) => {
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="活动类型"
+                    label="活动标签"
                     name="typeId"
                     rules={[{ required: true, message: '请选择活动类型' }]}
                 >
@@ -228,7 +228,7 @@ const AddNewP = (props) => {
                     </Form.Item>
                 }
                 <Form.Item
-                    label="绑定标签"
+                    label="自定义标签"
                 >
                     <TreeSelect
                         showSearch

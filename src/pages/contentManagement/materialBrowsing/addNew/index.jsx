@@ -8,7 +8,7 @@ const { TextArea } = Input;
 const options = [
     {
         value: 1,
-        name: '营销素材'
+        name: '营销话术'
     },
     {
         value: 2,

@@ -1,5 +1,5 @@
 import './index.scss'
-import { Select, Input, Button, Tag, Drawer } from 'antd';
+import { Select, Input, Button, Tag } from 'antd';
 import { useState, useEffect } from 'react';
 import { activityList, updateActivity } from '../../../request/api/activity';
 import TableView from '~components/Table'
@@ -24,10 +24,12 @@ const ContentBrowsing = () => {
     const columns = [
         {
             title: '活动ID',
-            dataIndex: 'activeId'
+            render: (text, data, index) => {
+                return index + 1
+            }
         },
         {
-            title: '直播',
+            title: '活动',
             width: 240,
             render: (text, data) => {
                 return (
@@ -47,7 +49,7 @@ const ContentBrowsing = () => {
             dataIndex: 'typeName'
         },
         {
-            title: '直播状态',
+            title: '活动状态',
             render: (text, data) => {
                 if (data.status === '未开始') {
                     return (<div className='statusBox'>

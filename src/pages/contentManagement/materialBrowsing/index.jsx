@@ -36,7 +36,7 @@ const MaterialBrowsing = () => {
         {
             title: '素材类型',
             render(text, data){
-                return data.type === 1 ? '营销素材' : '朋友圈素材'
+                return data.type === 1 ? '营销话术' : '朋友圈素材'
             }
         },
         {

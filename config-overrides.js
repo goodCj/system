@@ -6,16 +6,8 @@ const addDevServer = () => config => {
     return {
         ...config,
         proxy: {
-            "/admin": {
-                // target: "http://localhost:3000",
-                target: "http://yamingzhang.com:3000/",
-                changeOrigin: true,
-                secure: true,
-                logLevel: 'info'
-            },
-            "/common": {
-                // target: "http://localhost:3000",
-                target: "http://yamingzhang.com:3000/",
+            "/api": {
+                target: "http://150.158.237.132/",
                 changeOrigin: true,
                 secure: true,
                 logLevel: 'info'
@@ -27,12 +19,12 @@ const addDevServer = () => config => {
 module.exports = {
     webpack: override(
         addWebpackAlias({
-            ["~static"]: path.resolve(__dirname, './src/static'),
-            ["~components"]: path.resolve(__dirname, './src/components'),
-            ["~pages"]: path.resolve(__dirname, './src/pages'),
-            ["~request"]: path.resolve(__dirname, './src/request'),
-            ["~route"]: path.resolve(__dirname, './src/route'),
-            ["~utils"]: path.resolve(__dirname, './src/utils')
+            "~static": path.resolve(__dirname, './src/static'),
+            "~components": path.resolve(__dirname, './src/components'),
+            "~pages": path.resolve(__dirname, './src/pages'),
+            "~request": path.resolve(__dirname, './src/request'),
+            "~route": path.resolve(__dirname, './src/route'),
+            "~utils": path.resolve(__dirname, './src/utils')
         }),
         (config, env) => {
             config.devtool = config.mode === 'development' ? 'cheap-module-source-map' : false;

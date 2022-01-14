@@ -5,7 +5,6 @@ body,
 #root {
   margin: 0;
   padding: 0;
-  overflow: hidden;
   width: 100%;
   height: 100%;
   font-family: PingFang SC;
@@ -33,6 +32,7 @@ body,
   .content-container {
     width: 100%;
     height: 100%;
+    overflow: hidden;
     overflow: auto;
 
     .layout-container {
@@ -41,7 +41,7 @@ body,
 
     .layout-sider {
       color: #fff;
-      font-size: 16px!important;
+      font-size: 16px !important;
 
       .logo-title {
         height: 60px;
@@ -67,9 +67,7 @@ body,
       }
 
       .userInfoBox {
-
         .logout {
-
           span {
             margin-left: 8px;
             cursor: pointer;
@@ -81,20 +79,21 @@ body,
 
     .layout-content {
       padding: 20px;
-      overflow: hidden;
+      // overflow: hidden;
       position: relative;
       #loading {
         position: absolute;
         left: 20px;
         top: 20px;
         z-index: 9;
-    background-color: rgb(255 255 255 / 57%)!important;
+        background-color: rgb(255 255 255 / 57%) !important;
       }
     }
 
     .layout-content > div {
       width: 100%;
       height: 100%;
+      overflow-y: scroll;
       background-color: #fff;
     }
   }
@@ -103,10 +102,10 @@ body,
     width: max-content;
     border-radius: 5px;
     .optionsIcon {
-        font-size: 12px;
-        vertical-align: middle;
-        margin-right: 4px;
-        margin-top: -2px;
+      font-size: 12px;
+      vertical-align: middle;
+      margin-right: 4px;
+      margin-top: -2px;
     }
   }
 
@@ -115,7 +114,8 @@ body,
     color: #40a9ff;
   }
 }
-.ant-modal,.ant-modal-content {
+.ant-modal,
+.ant-modal-content {
   border-radius: 10px;
   overflow: hidden;
 }
