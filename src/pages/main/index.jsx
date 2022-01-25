@@ -185,7 +185,7 @@ const Test = () => {
             </div>
             <div className="center-data">
                 <div className="dataBox">
-                    <div className="title">{wxUser.allCount}<QuestionCircleOutlined className="tipIcon" /></div>
+                    <div className="title"><QuestionCircleOutlined className="tipIcon" /></div>
                     <div className="centerNum">
                         <div className='num'>
                             {wxUser.phoneCount}

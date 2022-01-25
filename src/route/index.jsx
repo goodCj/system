@@ -20,7 +20,6 @@ const createRoute = (routes) => {
 }
 
 const changeRoute = (userInfo, routes) => {
-    console.log(userInfo)
     return routes.map(item => {
         if(userInfo?.role === 0 && item.title === '公司管理'){
             console.log(item)

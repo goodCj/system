@@ -112,7 +112,7 @@ const BatchImport = (props) => {
                         </div>
                     </Dragger>
                 </div>
-                <div className='uploadTip'>请按模板格式填写后上传：<span onClick={() => window.open('www.baidu.com')}>下载标准模板</span></div>
+                <div className='uploadTip'>请按模板格式填写后上传：<a href='https://file-1303063528.cos.ap-shanghai.myqcloud.com/%E6%A8%A1%E6%9D%BF.xlsx' download>下载标准模板</a></div>
             </div>
         </Modal>
     )

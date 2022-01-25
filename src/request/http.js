@@ -25,10 +25,7 @@ function hideLoading() {
 
 const changeConfig = (config) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    console.log(userInfo)
     const currentCompany = JSON.parse(localStorage.getItem('currentCompany'))
-    console.log(config)
-    console.log('------',userInfo, currentCompany)
     if (!config.noCompany) {
         if (userInfo?.role === 0 && currentCompany) {
             if(!config.data){

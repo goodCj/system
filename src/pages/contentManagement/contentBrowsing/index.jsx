@@ -7,6 +7,7 @@ import moment from 'moment'
 import AddNewP from './addNew';
 import DeleteActivityM from './deleteActivity';
 import SeeData from './seeData';
+import SeeDetails from './seeDetails';
 import Remind from './remind'
 const { Option } = Select;
 
@@ -116,7 +117,10 @@ const ContentBrowsing = () => {
                             <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goOut')}>下线</span>
                         }
                         <span className='actions edit' style={{ cursor: 'pointer' }} onClick={() => openDeleteM(data)}>删除</span>
-                        </>:<span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
+                        </>: <>
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeDetails(data)}>详细数据</span>
+                        </>
                     }
                     </>
                 )
@@ -137,6 +141,8 @@ const ContentBrowsing = () => {
     const [currentNode, setCurrentNode] = useState()
     const [deleteFlag, setDeleteFlag] = useState(false)
     const [seeDataFlag, setSeeDataFlag] = useState(false)
+    const [seeDetailsFlag, setSeeDetailsFlag] = useState(false)
+    
     const [remindFlag, setRemindFlag] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const showFlag = !(userInfo?.role > 1)
@@ -230,6 +236,16 @@ const ContentBrowsing = () => {
         setSeeDataFlag(true)
      }
 
+     /**
+      * @method clickSeeData
+      * @param data
+      * @description 详细数据
+      */
+     const clickSeeDetails = (data) => {
+        setCurrentNode(data)
+        setSeeDetailsFlag(true)
+     }
+
     /**
      * @method in_outLine
      * @description 上下线
@@ -264,6 +280,9 @@ const ContentBrowsing = () => {
             }
             {
                 seeDataFlag && <SeeData {...{ seeDataFlag, setSeeDataFlag,currentNode,setCurrentNode }}></SeeData>
+            }
+            {
+                seeDetailsFlag && <SeeDetails {...{ seeDetailsFlag, setSeeDetailsFlag,currentNode,setCurrentNode }}></SeeDetails>
             }
             {
                 remindFlag && <Remind {...{ remindFlag, setRemindFlag,currentNode,setCurrentNode }}></Remind>

@@ -3,7 +3,6 @@ import {
     HomeOutlined,
     UserOutlined,
     BarChartOutlined,
-    AlignLeftOutlined,
     TeamOutlined
 } from '@ant-design/icons';
 

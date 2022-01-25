@@ -53,12 +53,12 @@ const FieldManagement = () => {
             title: '职称',
             dataIndex: 'title',
         },
+        // {
+        //     title: '公司代码',
+        //     dataIndex: 'companyId',
+        // },
         {
-            title: '公司代码',
-            dataIndex: 'companyId',
-        },
-        {
-            title: '公司地址',
+            title: '机构名称',
             dataIndex: 'company',
         },
         {
