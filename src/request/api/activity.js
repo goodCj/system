@@ -1,5 +1,6 @@
 import service from "../http";
 
+// 
 // 活动列表
 export const activityList = (params) => {
     return service({
@@ -149,5 +150,29 @@ export const remindActive = (params) => {
         method: 'POST',
         hideLoading: true,
         data: params
+    })
+}
+
+// 活动详细数据
+export const activeDetails = (params) => {
+    return service({
+        url: '/admin/data/getActiveDetail',
+        method: 'POST',
+        data: {
+            ...params,
+            belongCompany: JSON.parse(localStorage.getItem('currentCompany')).id
+        }
+    })
+}
+
+// 活动详细数据文件
+export const getDetailsFile = (params) => {
+    return service({
+        url: '/admin/data/getActiveXlsx',
+        method: 'POST',
+        data: {
+            ...params,
+            belongCompany: JSON.parse(localStorage.getItem('currentCompany')).id
+        }
     })
 }

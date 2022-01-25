@@ -127,9 +127,9 @@ const AddNewP = (props) => {
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="公司地址"
+                    label="机构名称"
                     name="company"
-                    rules={[{ required: true, message: '请输入公司地址' }]}
+                    rules={[{ required: true, message: '请输入机构名称' }]}
                 >
                     <Input />
                 </Form.Item>
