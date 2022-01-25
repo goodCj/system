@@ -107,6 +107,7 @@ const ContentBrowsing = () => {
                             editActive(data)
                         }}>编辑</span>
                         <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeDetails(data)}>详细数据</span>
                         <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickRemind(data)}>提醒</span>
                         {
                             (data.status === '未开始' || data.status === '已结束') &&
@@ -117,9 +118,10 @@ const ContentBrowsing = () => {
                             <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goOut')}>下线</span>
                         }
                         <span className='actions edit' style={{ cursor: 'pointer' }} onClick={() => openDeleteM(data)}>删除</span>
-                        </>: <>
-                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
-                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeDetails(data)}>详细数据</span>
+                        </>: 
+                        <>
+                            <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
+                            <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeDetails(data)}>详细数据</span>
                         </>
                     }
                     </>

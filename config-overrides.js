@@ -7,10 +7,9 @@ const addDevServer = () => config => {
         ...config,
         proxy: {
             "/api": {
-                target: "http://150.158.237.132/",
+                target: "http://119.28.163.231:3000/",
                 changeOrigin: true,
                 secure: true,
-                logLevel: 'info'
             }
         },
     }
