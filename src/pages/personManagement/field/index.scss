@@ -1,0 +1,116 @@
+.field {
+    display: flex;
+    .ant-tabs,.ant-tabs-content {
+        height: 100%;
+    }
+    .left-search {
+        border-right: 1px solid #d4d4d7;
+        .search-container {
+            .top-search {
+                width: 180px;
+            }
+            .bottom-content {
+                margin-top: 16px;
+                .searchTree {
+                    font-size: 14px;
+                }
+                .ant-tree-list-holder-inner {
+                    &>div {
+                        margin-bottom: 8px;
+                    }
+                }
+                .ant-tree-switcher-icon {
+                    font-size: 14px;
+                }
+                .ant-tree-node-selected {
+                    background-color: #fff;
+                    color: #1890ff;
+                }
+                // .ant-tree-switcher-noop {
+                //     display: none;
+                // }
+            }
+        }
+    }
+    .left-search-show {
+        width: 260px;
+        padding: 20px;
+        transition: all 0.2s;
+    }
+    .left-search-hide {
+        width: 0;
+        padding: 0;
+        transition: all 0.2s;
+    }
+    .right-table {
+        flex: 1;
+        position: relative;
+        padding: 10px 20px 20px  20px;
+        .tableBox {
+            height: calc(100% - 50px);
+        }
+        .shrink {
+            position: absolute;
+            width: 24px;
+            height: 32px;
+            z-index: 9;
+            background-color: #fff;
+            border: 1px solid #d4d4d7;
+            top: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            font-size: 18px;
+            justify-content: center;
+            align-items: center;
+            .line {
+                height: 100%;
+                width: 2px;
+                position: absolute;
+                right: -1px;
+                top: 0;
+                background-color: #fff;
+            }
+        }
+        .shrink:hover {
+            color: #3370ff;
+        }
+        .hideIcon {
+            border-radius: 5px 0px 0px 5px;
+            left: -24px;
+            border-right: 0;
+        }
+        .showIcon {
+            border-radius: 0 5px 5px 0;
+            left: 0;
+            border-left: 0;
+        }
+        &-content {
+            width: 100%;
+            height: 100%;
+            .top-options {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 18px;
+            }
+            .left-button {
+                .addNewP {
+                    margin-right: 16px;
+                }
+            }
+        }
+    }
+}
+.ant-popover-inner-content {
+    font-size: 14px;
+    padding: 8px 12px;
+}
+.btnGroup {
+    .ant-btn {
+        display: block;
+    }
+    .ant-btn:hover {
+        color: #1890ff;
+        background-color: #fff;
+    }
+}
