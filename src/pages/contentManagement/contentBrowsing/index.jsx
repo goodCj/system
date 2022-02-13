@@ -1,5 +1,5 @@
 import './index.scss'
-import { Select, Input, Button, Tag } from 'antd';
+import { Select, Input, Button, Tag, message } from 'antd';
 import { useState, useEffect } from 'react';
 import { activityList, updateActivity } from '../../../request/api/activity';
 import TableView from '~components/Table'
@@ -8,7 +8,7 @@ import AddNewP from './addNew';
 import DeleteActivityM from './deleteActivity';
 import SeeData from './seeData';
 import SeeDetails from './seeDetails';
-import Remind from './remind'
+import { useHistory } from 'react-router-dom';
 const { Option } = Select;
 
 const ContentBrowsing = () => {
@@ -24,6 +24,7 @@ const ContentBrowsing = () => {
     ]
     const columns = [
         {
+            width: 120,
             title: '活动ID',
             render: (text, data, index) => {
                 return index + 1
@@ -46,10 +47,12 @@ const ContentBrowsing = () => {
             }
         },
         {
+            width: 120,
             title: '活动类型',
             dataIndex: 'typeName'
         },
         {
+            width: 120,
             title: '活动状态',
             render: (text, data) => {
                 if (data.status === '未开始') {
@@ -73,6 +76,7 @@ const ContentBrowsing = () => {
             }
         },
         {
+            width: 160,
             title: '开始时间',
             dataIndex: 'startTime',
             sorter: (a, b) => {
@@ -80,6 +84,7 @@ const ContentBrowsing = () => {
             }
         },
         {
+            width: 240,
             title: '活动标签',
             render: (text, data) => {
                 return (
@@ -87,7 +92,7 @@ const ContentBrowsing = () => {
                         {
                             data.tags.length > 0 ?
                                 data.tags.map(item => {
-                                    return  item.tag ? <Tag color="blue" key={item.tag.id}>{item.tag.name}</Tag> : '-'
+                                    return item.tag ? <Tag color="blue" key={item.tag.id}>{item.tag.name}</Tag> : '-'
                                 }) : '-'
                         }
                     </>
@@ -95,35 +100,38 @@ const ContentBrowsing = () => {
             }
         },
         {
+            width: 200,
+            fixed: 'right',
             title: '操作',
             render: (text, data) => {
                 return (
                     <>
-                    {
-                        showFlag ? 
-                        <>
-                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => {
-                            data.startTime = moment(data.startTime, 'YYYY-MM-DD')
-                            editActive(data)
-                        }}>编辑</span>
-                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
-                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeDetails(data)}>详细数据</span>
-                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickRemind(data)}>提醒</span>
                         {
-                            (data.status === '未开始' || data.status === '已结束') &&
-                            <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goIn')}>上线</span>
+                            showFlag ?
+                                <>
+                                    <span className='actions' style={{ cursor: 'pointer' }} onClick={() => {
+                                        data.startTime = moment(data.startTime, 'YYYY-MM-DD')
+                                        editActive(data)
+                                    }}>编辑</span>
+                                    <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
+                                    <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeDetails(data)}>详细数据</span>
+                                    <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickRemind(data)}>提醒</span>
+                                    {
+                                        (data.status === '未开始' || data.status === '已结束') &&
+                                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goIn')}>上线</span>
+                                    }
+                                    {
+                                        data.status === '进行中' &&
+                                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goOut')}>下线</span>
+                                    }
+                                    <span className='actions edit' style={{ cursor: 'pointer' }} onClick={() => openDeleteM(data)}>删除</span>
+                                </> :
+                                <>
+                                    <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
+                                    <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeDetails(data)}>详细数据</span>
+                                    <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickRemind(data)}>提醒</span>
+                                </>
                         }
-                        {
-                            data.status === '进行中' &&
-                            <span className='actions' style={{ cursor: 'pointer' }} onClick={() => in_outLine(data, 'goOut')}>下线</span>
-                        }
-                        <span className='actions edit' style={{ cursor: 'pointer' }} onClick={() => openDeleteM(data)}>删除</span>
-                        </>: 
-                        <>
-                            <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeData(data)}>数据查看</span>
-                            <span className='actions' style={{ cursor: 'pointer' }} onClick={() => clickSeeDetails(data)}>详细数据</span>
-                        </>
-                    }
                     </>
                 )
             }
@@ -144,10 +152,11 @@ const ContentBrowsing = () => {
     const [deleteFlag, setDeleteFlag] = useState(false)
     const [seeDataFlag, setSeeDataFlag] = useState(false)
     const [seeDetailsFlag, setSeeDetailsFlag] = useState(false)
-    
-    const [remindFlag, setRemindFlag] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const showFlag = !(userInfo?.role > 1)
+    const history = useHistory()
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [batchFlag, setBatchFlag] = useState(false)
 
 
     useEffect(() => {
@@ -203,9 +212,9 @@ const ContentBrowsing = () => {
      * @method clickRemind
      * @description 点击提醒
      */
-     const clickRemind = (data) => {
+    const clickRemind = (data) => {
         setCurrentNode(data)
-        setRemindFlag(true)
+        history.push({ pathname: '/app/contentManagement/materialBrowsing/remind', state: { currentNode: data } })
     }
 
     /**
@@ -214,6 +223,20 @@ const ContentBrowsing = () => {
      */
     const openDeleteM = (data) => {
         setCurrentNode(data)
+        setBatchFlag(false)
+        setDeleteFlag(true)
+    }
+
+     /**
+     * @method batchDelete
+     * @description 批量删除
+     */
+      const batchDelete = () => {
+        if(selectedRowKeys.length === 0) {
+            message.warning('请选择活动')
+            return
+        }
+        setBatchFlag(true)
         setDeleteFlag(true)
     }
 
@@ -223,30 +246,30 @@ const ContentBrowsing = () => {
      * @description 编辑活动
      */
 
-     const editActive = (data) => {
+    const editActive = (data) => {
         setCurrentNode(data)
         setAddNewFlag(true)
-     }
+    }
 
-     /**
-      * @method clickSeeData
-      * @param data
-      * @description 点击数据查看
-      */
-     const clickSeeData = (data) => {
+    /**
+     * @method clickSeeData
+     * @param data
+     * @description 点击数据查看
+     */
+    const clickSeeData = (data) => {
         setCurrentNode(data)
         setSeeDataFlag(true)
-     }
+    }
 
-     /**
-      * @method clickSeeData
-      * @param data
-      * @description 详细数据
-      */
-     const clickSeeDetails = (data) => {
+    /**
+     * @method clickSeeData
+     * @param data
+     * @description 详细数据
+     */
+    const clickSeeDetails = (data) => {
         setCurrentNode(data)
         setSeeDetailsFlag(true)
-     }
+    }
 
     /**
      * @method in_outLine
@@ -272,31 +295,43 @@ const ContentBrowsing = () => {
         }
     }
 
+    const onSelectChange = (selectedRowKeys, selectedRows) => {
+        let arr = selectedRows.map(item => {
+            return item.activeId
+        })
+        setSelectedRowKeys(arr)
+    }
+
     return (
         <div className="contentBrowsing">
             {
-                addNewFlag && <AddNewP {...{ addNewFlag, setAddNewFlag, currentNode,setCurrentNode, setActivityTableOption }}></AddNewP>
+                addNewFlag && <AddNewP {...{ addNewFlag, setAddNewFlag, currentNode, setCurrentNode, setActivityTableOption }}></AddNewP>
             }
             {
-                deleteFlag && <DeleteActivityM {...{ deleteFlag, setDeleteFlag, currentNode,setCurrentNode, getActivityList }}></DeleteActivityM>
+                deleteFlag && <DeleteActivityM {...{batchFlag, selectedRowKeys,setSelectedRowKeys, deleteFlag, setDeleteFlag, currentNode, setCurrentNode, getActivityList }}></DeleteActivityM>
             }
             {
-                seeDataFlag && <SeeData {...{ seeDataFlag, setSeeDataFlag,currentNode,setCurrentNode }}></SeeData>
+                seeDataFlag && <SeeData {...{ seeDataFlag, setSeeDataFlag, currentNode, setCurrentNode }}></SeeData>
             }
             {
-                seeDetailsFlag && <SeeDetails {...{ seeDetailsFlag, setSeeDetailsFlag,currentNode,setCurrentNode }}></SeeDetails>
-            }
-            {
-                remindFlag && <Remind {...{ remindFlag, setRemindFlag,currentNode,setCurrentNode }}></Remind>
+                seeDetailsFlag && <SeeDetails {...{ seeDetailsFlag, setSeeDetailsFlag, currentNode, setCurrentNode }}></SeeDetails>
             }
             <div className="topOptions">
                 <div>
                     {
-                        showFlag && <Button
-                        className='addNewP'
-                        type="primary"
-                        onClick={() => setAddNewFlag(true)}
-                    >新增活动</Button>
+                        showFlag && 
+                        <>
+                            <Button
+                            className='addNewP'
+                            type="primary"
+                            onClick={() => setAddNewFlag(true)}
+                        >新增活动</Button>
+                        <Button
+                            className='addNewP'
+                            type="primary"
+                            onClick={batchDelete}
+                        >批量删除</Button>
+                        </>
                     }
                 </div>
                 <div>
@@ -316,6 +351,12 @@ const ContentBrowsing = () => {
             </div>
             <div className='tableBox'>
                 <TableView
+                    rowSelection={{
+                        type: 'checkbox',
+                        selectedRowKeys,
+                        onChange: onSelectChange
+                    }}
+                    rowKey={tr => tr.activeId}
                     columns={columns}
                     data={tableData}
                     setPage={setActivityTableOption}

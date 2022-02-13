@@ -1,8 +1,8 @@
 import { Modal, Button } from 'antd';
-import { deleteActivity } from '~request/api/activity';
+import { deleteActivity, batchdDeleteActivity } from '~request/api/activity';
 
 const DeleteActivityM = (props) => {
-    const { deleteFlag, setDeleteFlag,setCurrentNode, currentNode, getActivityList } = props
+    const { batchFlag, deleteFlag, setDeleteFlag,setCurrentNode, currentNode, getActivityList, selectedRowKeys, setSelectedRowKeys } = props
 
     /**
      * @method handleCancel
@@ -18,12 +18,20 @@ const DeleteActivityM = (props) => {
      * @description 删除活动
      */
      const deleteActive = async () => {
-        let res = await deleteActivity({
-            activeId: currentNode.activeId
-        })
+         let res = null
+        if(batchFlag){
+            res = await batchdDeleteActivity({
+                activeIds: selectedRowKeys
+            })
+        } else {
+            res = await deleteActivity({
+                activeId: currentNode.activeId
+            })
+        }
         if(res.code === 0){
-            getActivityList()
             setDeleteFlag(false)
+            setSelectedRowKeys([])
+            getActivityList()
         }
     }
 
@@ -37,7 +45,12 @@ const DeleteActivityM = (props) => {
             footer={null}
         >
             <div style={{ textAlign: 'center', margin: '20px 0 40px' }}>
-                确定删除<span style={{ color: 'red', marginLeft: '6px' }}>{currentNode.title}</span>
+            确定删除{
+                    batchFlag ?
+                    <><span style={{ color: 'red', margin: '0 6px' }}>{selectedRowKeys.length}</span>项</>
+                    :
+                    <span style={{ color: 'red', marginLeft: '6px' }}>{currentNode.title}</span>
+                }
             </div>
             <div style={{ textAlign: 'center' }}>
                 <Button htmlType="submit" onClick={handleCancel}>

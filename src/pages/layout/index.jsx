@@ -1,7 +1,7 @@
 import './index.scss'
 import App from "~route"
 import routes from '~route/config';
-import { Layout, Menu, Button, Popover } from 'antd';
+import { Layout, Menu, Popover } from 'antd';
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { companyList } from "~request/api/company";
@@ -37,7 +37,7 @@ const Main = () => {
         if (pageKey) {
             setCurrentPage([pageKey])
         }
-        if(userInfo?.role === 0) getCompanylist()
+        if (userInfo?.role === 0) getCompanylist()
     }, [])
 
     useEffect(() => {
@@ -149,13 +149,13 @@ const Main = () => {
         <div className="content-container">
             {/* 添加新公司 */}
             {
-                addNewFlag && <AddNewP { ...{addNewFlag, setAddNewFlag } }></AddNewP>
+                addNewFlag && <AddNewP {...{ addNewFlag, setAddNewFlag }}></AddNewP>
             }
             <Layout className='layout-container'>
                 <Sider width='260' trigger={null} className='layout-sider' collapsed={collapsed} collapsible>
                     <div className="logo-title">
                         {
-                            !collapsed ? '齿科智能营销系统' : <MenuUnfoldOutlined />
+                            !collapsed ? '齿科智能营销系统' : '齿科'
                         }
                     </div>
                     <div className="menu">
@@ -208,6 +208,7 @@ const Main = () => {
                                             )
                                         }
                                     }
+                                    return false
                                 })
                             }
                         </Menu>

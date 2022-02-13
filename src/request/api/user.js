@@ -59,3 +59,12 @@ export const _batchImportUser = (params) => {
         }
     })
 }
+
+// 批量上传用户
+export const _batchUser = (params) => {
+    return service({
+        url: '/admin/user/batchHandle',
+        method: 'POST',
+        data: params
+    })
+}

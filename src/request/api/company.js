@@ -31,3 +31,14 @@ export const _deleteCompany = (params) => {
         noCompany: true
     })
 }
+
+// 获取所有的公司树状结构
+export const allCompanyTree = (params) => {
+    return service({
+        url: '/admin/user/filialeTree',
+        method: 'POST',
+        data: params,
+        hideLoading: true,
+        noCompany: true
+    })
+}

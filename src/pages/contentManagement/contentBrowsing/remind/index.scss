@@ -1,0 +1,44 @@
+.remind {
+    .content {
+        padding: 0 20px 20px 20px;
+        display: flex;
+        height: calc(100% - 55px);
+        .leftTree {
+            padding-top: 20px;
+            box-sizing: border-box;
+            width: 280px;
+            border-right: 1px solid #d4d4d7;
+            padding-right: 20px;
+            .companyTree {
+                font-size: 14px;
+            }
+        }
+        .rightTable {
+            padding-top: 20px;
+            width: calc(100% - 220px);
+            padding-left: 20px;
+            .topInfo {
+                margin-bottom: 12px;
+                display: flex;
+                justify-content: space-between;
+                .btn {
+                    margin-right: 8px;
+                }
+            }
+        }
+    }
+    .board {
+        padding: 16px 20px;
+        font-size: 14px;
+        border-bottom: 1px solid #d4d4d7;
+        .prePath {
+            cursor: pointer;
+            color: #979696;
+        }
+    }
+    .title {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 12px;
+    }
+}

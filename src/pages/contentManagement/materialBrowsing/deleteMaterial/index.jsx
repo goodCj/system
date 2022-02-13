@@ -1,16 +1,16 @@
 import { Modal, Button } from 'antd';
-import { deleteMaterial } from '~request/api/material';
+import { deleteMaterial, batchDeleteMaterial } from '~request/api/material';
 
 const DeleteMaterialM = (props) => {
-    const { deleteFlag, setDeleteFlag,setCurrentNode, currentNode, getMaterialList } = props
+    const {batchFlag, selectedRowKeys,setSelectedRowKeys, deleteFlag, setDeleteFlag,setCurrentNode, currentNode, getMaterialList } = props
 
     /**
      * @method handleCancel
      * @description 点击关闭遮罩
      */
     const handleCancel = () => {
-        setCurrentNode(null)
         setDeleteFlag(false)
+        setCurrentNode(null)
     }
 
     /**
@@ -18,12 +18,20 @@ const DeleteMaterialM = (props) => {
      * @description 删除活动
      */
      const _deleteMaterial = async () => {
-        let res = await deleteMaterial({
-            fodderId: currentNode.fodderId
-        })
+        let res = null
+        if(batchFlag){
+            res = await batchDeleteMaterial({
+                fodderIds: selectedRowKeys
+            })
+        } else {
+            res = await deleteMaterial({
+                fodderId: currentNode.fodderId
+            })
+        }
         if(res.code === 0){
             getMaterialList()
-            setDeleteFlag(false)
+            setSelectedRowKeys([])
+            handleCancel()
         }
     }
 
@@ -37,7 +45,12 @@ const DeleteMaterialM = (props) => {
             footer={null}
         >
             <div style={{ textAlign: 'center', margin: '20px 0 40px' }}>
-                确定删除<span style={{ color: 'red', marginLeft: '6px' }}>{currentNode.title}</span>
+                确定删除{
+                    batchFlag ?
+                    <><span style={{ color: 'red', margin: '0 6px' }}>{selectedRowKeys.length}</span>项</>
+                    :
+                    <span style={{ color: 'red', marginLeft: '6px' }}>{currentNode.title}</span>
+                }
             </div>
             <div style={{ textAlign: 'center' }}>
                 <Button htmlType="submit" onClick={handleCancel}>

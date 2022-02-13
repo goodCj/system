@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import TableView from '~components/Table'
 import { materialList } from '~request/api/material'
-import { Select, Input, Button, Tag } from 'antd';
+import { Select, Input, Button, Tag, message } from 'antd';
 import moment from 'moment'
 import './index.scss'
 import AddNewP from './addNew';
 import DeleteMaterialM from './deleteMaterial';
-import { render } from '@testing-library/react';
 const { Option } = Select;
 
 const MaterialBrowsing = () => {
@@ -22,24 +21,29 @@ const MaterialBrowsing = () => {
     ]
     const columns = [
         {
+            width: 160,
             title: '素材ID',
             dataIndex: 'fodderId'
         },
         {
+            width: 120,
             title: '素材名称',
             dataIndex: 'title'
         },
         {
+            width: 260,
             title: '素材内容',
             dataIndex: 'content'
         },
         {
+            width: 120,
             title: '素材类型',
-            render(text, data){
+            render(text, data) {
                 return data.type === 1 ? '营销话术' : '朋友圈素材'
             }
         },
         {
+            width: 240,
             title: '素材标签',
             render: (text, data) => {
                 return (
@@ -55,6 +59,7 @@ const MaterialBrowsing = () => {
             }
         },
         {
+            width: 160,
             title: '更新时间',
             dataIndex: 'updatedAt',
             sorter: (a, b) => {
@@ -62,11 +67,13 @@ const MaterialBrowsing = () => {
             }
         },
         {
+            width: 200,
+            fixed: 'right',
             title: '操作',
             render: (text, data) => {
                 return (
                     <>
-                    <span className='actions' style={{ cursor: 'pointer' }}onClick={() => {
+                        <span className='actions' style={{ cursor: 'pointer' }} onClick={() => {
                             data.updatedAt = moment(data.updatedAt, 'YYYY-MM-DD')
                             editMaterial(data)
                         }}>编辑</span>
@@ -91,7 +98,9 @@ const MaterialBrowsing = () => {
     const [deleteFlag, setDeleteFlag] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const showFlag = !(userInfo?.role > 1)
-    if(!showFlag){
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [batchFlag, setBatchFlag] = useState(false)
+    if (!showFlag) {
         columns.pop()
     }
 
@@ -106,25 +115,46 @@ const MaterialBrowsing = () => {
      * @description 编辑活动
      */
 
-     const editMaterial = (data) => {
+    const editMaterial = (data) => {
         setCurrentNode(data)
         setAddNewFlag(true)
-     }
+    }
 
-     /**
-     * @method deleteTag
-     * @description 删除用户
-     */
-      const openDeleteM = (data) => {
+    /**
+    * @method openDeleteM
+    * @description 删除素材
+    */
+    const openDeleteM = (data) => {
         setCurrentNode(data)
+        setBatchFlag(false)
         setDeleteFlag(true)
+    }
+
+    /**
+     * @method openBatchDelete
+     * @description 批量删除素材
+     */
+    const openBatchDelete = () => {
+        if (selectedRowKeys.length === 0) {
+            message.warning('请选择素材')
+            return
+        }
+        setBatchFlag(true)
+        setDeleteFlag(true)
+    }
+
+    const onSelectChange = (selectedRowKeys, selectedRows) => {
+        let arr = selectedRows.map(item => {
+            return item.fodderId
+        })
+        setSelectedRowKeys(arr)
     }
 
     /**
      * @method getMaterialList
      * @description 获取素材列表
      */
-     const getMaterialList = async () => {
+    const getMaterialList = async () => {
         let params = {
             ...materialTableOption
         }
@@ -151,19 +181,27 @@ const MaterialBrowsing = () => {
     return (
         <div className="material">
             {
-                addNewFlag && <AddNewP {...{ addNewFlag, setAddNewFlag, currentNode,setCurrentNode, setMaterialTableOption }}></AddNewP>
+                addNewFlag && <AddNewP {...{ addNewFlag, setAddNewFlag, currentNode, setCurrentNode, setMaterialTableOption }}></AddNewP>
             }
             {
-                deleteFlag && <DeleteMaterialM {...{ deleteFlag, setDeleteFlag, currentNode,setCurrentNode, getMaterialList }}></DeleteMaterialM>
+                deleteFlag && <DeleteMaterialM {...{batchFlag, selectedRowKeys,setSelectedRowKeys, deleteFlag, setDeleteFlag, currentNode, setCurrentNode, getMaterialList }}></DeleteMaterialM>
             }
             <div className="topOptions">
                 <div>
                     {
-                        showFlag && <Button
-                        className='addNewP'
-                        type="primary"
-                        onClick={() => setAddNewFlag(true)}
-                    >新增素材</Button>
+                        showFlag &&
+                        <>
+                            <Button
+                                className='addNewP'
+                                type="primary"
+                                onClick={() => setAddNewFlag(true)}
+                            >新增素材</Button>
+                            <Button
+                                className='addNewP'
+                                type="primary"
+                                onClick={openBatchDelete}
+                            >批量删除</Button>
+                        </>
                     }
                 </div>
                 <div>
@@ -183,6 +221,12 @@ const MaterialBrowsing = () => {
             </div>
             <div className='tableBox'>
                 <TableView
+                    rowSelection={{
+                        type: 'checkbox',
+                        selectedRowKeys,
+                        onChange: onSelectChange
+                    }}
+                    rowKey={tr => tr.fodderId}
                     columns={columns}
                     data={tableData}
                     setPage={setMaterialTableOption}

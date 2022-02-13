@@ -51,5 +51,8 @@
   .topOptions {
     display: flex;
     justify-content: space-between;
+    .addNewP {
+      margin-right: 8px;
+  }
   }
 }

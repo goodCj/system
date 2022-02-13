@@ -5,7 +5,7 @@ import './index.scss'
 
 
 const TableView = (props) => {
-    const { columns, data, type, setPage } = props
+    const { columns, data, rowSelection, setPage, rowKey } = props
     const [tableScrollHeight, setTableScrollHeight] = useState(500)
     const tableRef = useRef(null)
 
@@ -46,10 +46,8 @@ const TableView = (props) => {
                     showQuickJumper: true,
                     onChange: pageChange
                 }: false}
-                rowSelection={type ? {
-                    type: type
-                } : null}
-                rowKey={tr => tr.id}
+                rowSelection={rowSelection ? {...rowSelection} : null}
+                rowKey={rowKey ? rowKey : tr => tr.id}
                 columns={columns}
                 dataSource={data.data}
                 scroll={{ y: tableScrollHeight, scrollToFirstRowOnChange: true }}

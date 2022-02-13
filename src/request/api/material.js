@@ -36,6 +36,15 @@ export const deleteMaterial = (params) => {
     })
 }
 
+// 删除素材
+export const batchDeleteMaterial = (params) => {
+    return service({
+        url: '/admin/fodder/batchDelete',
+        method: 'POST',
+        data: params
+    })
+}
+
 // 更新素材
 export const updateMaterial = (params) => {
     return service({

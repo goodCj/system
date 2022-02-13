@@ -1,67 +1,63 @@
 import './index.scss'
-import { CaretRightOutlined, CaretLeftOutlined, SearchOutlined, CaretDownOutlined, DownOutlined } from '@ant-design/icons'
+import { SearchOutlined, DownOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
-import { Input, Tree, Popover, Button, Tabs, message } from 'antd'
+import { Input, Popover, Button, Tabs, message } from 'antd'
 import TableView from '~components/Table'
 import AddNewP from './addNewP'
 import BatchImport from './batchImport'
-import { getUserList, activateUser, _deleteUser } from '~request/api/user'
+import { getUserList, activateUser, _deleteUser, _batchUser } from '~request/api/user'
 import { getUserInfo } from '~request/api/base'
 import { useDounced } from '~utils'
 import DeleteUserM from './deleteUser'
 
 const { TabPane } = Tabs;
 
-const treeData = [
-    {
-        title: '保险场景运营',
-        key: '0-0',
-        children: [
-            {
-                title: '客户体验',
-                key: '0-0-0'
-            }
-        ],
-    },
-    {
-        title: '保险场景运营',
-        key: '1-0',
-        children: [
-            {
-                title: '客户体验',
-                key: '1-0-0'
-            }
-        ],
-    },
-];
-
 const FieldManagement = () => {
     const columns = [
         {
+            width: 150,
             title: '工号',
             dataIndex: 'jobId'
         },
         {
+            width: 200,
             title: '姓名',
             dataIndex: 'name'
         },
         {
+            width: 200,
             title: '手机号',
             dataIndex: 'phone',
         },
         {
+            width: 240,
             title: '职称',
             dataIndex: 'title',
         },
-        // {
-        //     title: '公司代码',
-        //     dataIndex: 'companyId',
-        // },
         {
+            title: '员工状态',
+            width: 160,
+            render: (_, data) => {
+                if (data.status === '1') {
+                    return (<div className='statusBox'>
+                        <span className="line inLine"></span>
+                        <span  className='in'>激活</span>
+                    </div>)
+                }else {
+                    return (<div className='statusBox' style={{color: 'red'}}>
+                        <span className="line endLine"></span>
+                        <span className='end'>未激活</span>
+                    </div>)
+                }
+            }
+        },
+        {
+            width: 260,
             title: '机构名称',
             dataIndex: 'company',
         },
         {
+            width: 140,
             title: '操作',
             render: (text, data) => {
                 return (
@@ -74,8 +70,7 @@ const FieldManagement = () => {
             }
         },
     ];
-    const [isShrink, setIsShrink] = useState(false)
-    const [selectionType, setSelectionType] = useState('checkbox');
+    // const [isShrink, setIsShrink] = useState(false)
     const [addNewFlag, setAddNewFlag] = useState(false)
     const [batchImportFlag, setBatchImportFlag] = useState(false)
     const [outworkerData, setOutworkerData] = useState({
@@ -100,7 +95,11 @@ const FieldManagement = () => {
     const [currentUser, setCurrentUser] = useState({})
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     const showFlag = !(userInfo?.role > 1)
-    if(!showFlag){
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [batchType, setBatchType] = useState('');
+    const [batchFlag, setBatchFlag] = useState(false)
+    
+    if (!showFlag) {
         columns.pop()
     }
 
@@ -112,9 +111,9 @@ const FieldManagement = () => {
      * @method handlerShrink
      * @description 点击是否隐藏左侧搜索
      */
-    const handlerShrink = () => {
-        setIsShrink(!isShrink)
-    }
+    // const handlerShrink = () => {
+    //     setIsShrink(!isShrink)
+    // }
 
     /**
      * @method BatchOptions
@@ -124,6 +123,12 @@ const FieldManagement = () => {
         return (
             <div className='btnGroup'>
                 <Button type="text" onClick={() => setBatchImportFlag(true)}>导入</Button>
+
+                <Button type="text" onClick={() => openBatch('delete')}>删除</Button>
+
+                <Button type="text" onClick={() => openBatch('active')}>激活</Button>
+
+                <Button type="text" onClick={() => openBatch('stop')}>停用</Button>
             </div>
         )
     }
@@ -134,6 +139,7 @@ const FieldManagement = () => {
      */
     const switchTab = async (key) => {
         setCurrentRole(key)
+        setSelectedRowKeys([])
     }
 
     /**
@@ -165,14 +171,21 @@ const FieldManagement = () => {
 
     const dbSearchUser = useDounced(searchUser, 800)
 
+    const onSelectChange = (selectedRowKeys, selectedRows) => {
+        let arr = selectedRows.map(item => {
+            return item.jobId
+        })
+        setSelectedRowKeys(arr)
+    }
+
     /**
      * @method initTable
      * @description 初始化表格
      */
     const initTable = async () => {
         let params = {}
-        if(userInfo?.role === 0 && localStorage.getItem('currentCompany')){
-            const currentCompany =  JSON.parse(localStorage.getItem('currentCompany'))
+        if (userInfo?.role === 0 && localStorage.getItem('currentCompany')) {
+            const currentCompany = JSON.parse(localStorage.getItem('currentCompany'))
             params.belongCompany = currentCompany.id
         }
         if (Number(currentRole) === 3) {
@@ -253,6 +266,7 @@ const FieldManagement = () => {
      */
     const openDeleteM = (data) => {
         setCurrentUser(data)
+        setBatchFlag(false)
         setDeleteUserFlag(true)
     }
     const deleteUser = async () => {
@@ -262,6 +276,47 @@ const FieldManagement = () => {
         if (res.code === 0) {
             message.success('删除成功')
             setDeleteUserFlag(false)
+            setSelectedRowKeys([])
+            initTable()
+        }
+    }
+
+    /**
+     * @method openBatch
+     * @description 批量操作
+     */
+    const openBatch = (type) => {
+        if(selectedRowKeys.length === 0) {
+            message.warning('请选择人员')
+            return
+        }
+        setBatchFlag(true)
+        setDeleteUserFlag(true)
+        setBatchType(type)
+    }
+    const batchUser = async () => {
+        let params = {
+            jobIds: selectedRowKeys
+        }
+        let text = ''
+        if(batchType === 'delete'){
+            params.type = 0
+            text = '删除'
+        }else {
+            params.type = 1
+            if(batchType === 'active'){
+                params.status = '1'
+                text = '激活'
+            }else {
+                params.status = '0'
+                text = '停用'
+            }
+        }
+        let res = await _batchUser(params)
+        if (res.code === 0) {
+            message.success(`${text}成功`)
+            setDeleteUserFlag(false)
+            setSelectedRowKeys([])
             initTable()
         }
     }
@@ -274,7 +329,7 @@ const FieldManagement = () => {
             }
             {/* 删除新用户 */}
             {
-                deleteUserFlag && <DeleteUserM {...{ deleteUserFlag, setDeleteUserFlag, deleteUser, currentUser }}></DeleteUserM>
+                deleteUserFlag && <DeleteUserM {...{batchFlag, batchType, selectedRowKeys, deleteUserFlag, setDeleteUserFlag, deleteUser, batchUser, currentUser }}></DeleteUserM>
             }
             {/* 批量导入新用户 */}
             {
@@ -344,7 +399,12 @@ const FieldManagement = () => {
                             </div>
                             <div className='tableBox'>
                                 <TableView
-                                    type={selectionType}
+                                rowSelection={{
+                                    type: 'checkbox',
+                                    selectedRowKeys,
+                                    onChange: onSelectChange
+                                }}
+                                rowKey={tr => tr.jobId}
                                     columns={columns}
                                     data={outworkerData}
                                     setPage={setOutworkerDataOptions}
@@ -356,20 +416,24 @@ const FieldManagement = () => {
                         <div className='right-table-content'>
                             <div className="top-options">
                                 <div className="left-button">
-                                    <Button
-                                        className='addNewP'
-                                        type="primary"
-                                        onClick={() => setAddNewFlag(true)}
-                                    >新增员工</Button>
-                                    <Popover
-                                        placement="bottom"
-                                        content={<BatchOptions />}
-                                        arrowPointAtCenter
-                                        trigger="hover">
-                                        <Button className='batch'>
-                                            批量操作<DownOutlined className='arrow' />
-                                        </Button>
-                                    </Popover>
+                                    {
+                                        showFlag && <>
+                                            <Button
+                                                className='addNewP'
+                                                type="primary"
+                                                onClick={() => setAddNewFlag(true)}
+                                            >新增员工</Button>
+                                            <Popover
+                                                placement="bottom"
+                                                content={<BatchOptions />}
+                                                arrowPointAtCenter
+                                                trigger="hover">
+                                                <Button className='batch'>
+                                                    批量操作<DownOutlined className='arrow' />
+                                                </Button>
+                                            </Popover>
+                                        </>
+                                    }
 
                                 </div>
                                 <div className="right-search">
@@ -378,7 +442,12 @@ const FieldManagement = () => {
                             </div>
                             <div className="tableBox">
                                 <TableView
-                                    type={selectionType}
+                                rowSelection={{
+                                    type: 'checkbox',
+                                    selectedRowKeys,
+                                    onChange: onSelectChange
+                                }}
+                                rowKey={tr => tr.jobId}
                                     columns={columns}
                                     data={officeworkerData}
                                     setPage={setOfficeworkerDataOptions}

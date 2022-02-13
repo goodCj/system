@@ -15,15 +15,18 @@ let newTreeData = []
 const TagManagement = () => {
     const columns = [
         {
+            width: 160,
             title: '标签名称',
             dataIndex: 'name'
         },
         {
+            width: 120,
             title: '标记内容数',
             dataIndex: 'belongCompany',
             sorter: (a, b) => a.belongCompany - b.belongCompany
         },
         {
+            width: 160,
             title: '创建时间',
             dataIndex: 'createdAt',
             sorter: (a, b) => {
@@ -31,6 +34,7 @@ const TagManagement = () => {
             }
         },
         {
+            width: 120,
             title: '操作',
             render: (text, data) => {
                 return (
@@ -46,7 +50,7 @@ const TagManagement = () => {
         return (<div className='titleBox'>
             <div className="leftText">{text}</div>
             {
-                type < 2 && <div className="add" onClick={() => addNode(id, type)}>
+                type < 2 && showFlag && <div className="add" onClick={() => addNode(id, type)}>
                     <PlusCircleOutlined />
                 </div>
             }
@@ -56,6 +60,12 @@ const TagManagement = () => {
 
     const [isShrink, setIsShrink] = useState(false)
     const [flag, setFlag] = useState(false)
+
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const showFlag = !(userInfo?.role > 1)
+    if (!showFlag) {
+        columns.pop()
+    }
 
     const InputNode = (props) => {
         const { parentId, type } = props
@@ -203,7 +213,6 @@ const TagManagement = () => {
     }
 
     const setTagList = (data) => {
-        let count = 0
         function deep(data, level = 0) {
             let arr = []
             data.forEach((item) => {
@@ -382,11 +391,13 @@ const TagManagement = () => {
                                     }
                                 </div>
                                 <div className="right-button">
-                                    <Button
+                                    {
+                                        showFlag && <Button
                                         className='addNewP'
                                         type="primary"
                                         onClick={clickAddBtn}
                                     >新增标签</Button>
+                                    }
                                 </div>
                             </div>
                             <div className='tableBox'>

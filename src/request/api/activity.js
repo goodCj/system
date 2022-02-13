@@ -43,6 +43,17 @@ export const deleteActivity = (params) => {
     })
 }
 
+// 删除活动
+export const batchdDeleteActivity = (params) => {
+    return service({
+        url: '/admin/active/batchDelete',
+        method: 'POST',
+        hideLoading: true,
+        data: params
+    })
+}
+
+
 // 获取活动所有类型 Type列表
 export const ActivityTypeList = (params) => {
     return service({
@@ -148,7 +159,7 @@ export const remindActive = (params) => {
     return service({
         url: '/admin/activeRemind/create',
         method: 'POST',
-        hideLoading: true,
+        hideLoading: false,
         data: params
     })
 }
@@ -173,6 +184,17 @@ export const getDetailsFile = (params) => {
         data: {
             ...params,
             belongCompany: JSON.parse(localStorage.getItem('currentCompany')).id
+        }
+    })
+}
+
+// 根据公司获取人员
+export const getCompanyPerson= (params) => {
+    return service({
+        url: '/admin/user/getCompanyStaff',
+        method: 'POST',
+        data: {
+            ...params
         }
     })
 }

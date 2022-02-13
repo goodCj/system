@@ -43,6 +43,7 @@
         transition: all 0.2s;
     }
     .right-table {
+        width: 100%;
         flex: 1;
         position: relative;
         padding: 10px 20px 20px  20px;
@@ -103,12 +104,12 @@
 }
 .ant-popover-inner-content {
     font-size: 14px;
-    padding: 8px 12px;
+    padding: 8px 4px;
 }
 .btnGroup {
-    .ant-btn {
-        display: block;
-    }
+    display: flex;
+    width: 130px;
+    flex-wrap: wrap;
     .ant-btn:hover {
         color: #1890ff;
         background-color: #fff;

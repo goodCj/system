@@ -12,6 +12,7 @@ const FieldManagement = lazy(() => import('../pages/personManagement/field'))
 const TagManagement = lazy(() => import('../pages/contentManagement/tagManagement/index'))
 const ContentBrowsing = lazy(() => import('../pages/contentManagement/contentBrowsing/index'))
 const MaterialBrowsing = lazy(() => import('../pages/contentManagement/materialBrowsing/index'))
+const Remind = lazy(() => import('../pages/contentManagement/contentBrowsing/remind/index'))
 const routes = [
     {
         path: '/app/main',
@@ -57,7 +58,13 @@ const routes = [
                 path: '/app/contentManagement/tagManagement',
                 component: TagManagement,
                 show: true
-            }
+            },
+            {
+                title: '提醒',
+                path: '/app/contentManagement/materialBrowsing/remind',
+                component: Remind,
+                show: false
+            },
         ]
     },
     // {

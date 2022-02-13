@@ -78,7 +78,7 @@ service.interceptors.response.use(
     },
     error => {
         hideLoading()
-        // message.error('服务器错误，请稍后重试', 2)
+        message.error('服务器错误，请稍后重试', 2)
     }
 )
 
